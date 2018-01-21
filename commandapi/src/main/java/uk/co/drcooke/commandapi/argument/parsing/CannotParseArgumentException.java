@@ -14,18 +14,20 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package uk.co.drcooke.commandapi.execution.argument;
+package uk.co.drcooke.commandapi.argument.parsing;
 
-import java.lang.annotation.Annotation;
+public class CannotParseArgumentException extends RuntimeException{
 
-public interface CommandParameter {
+    public CannotParseArgumentException(String message){
+        super(message);
+    }
 
-    Class<?> getType();
+    public CannotParseArgumentException(Throwable cause){
+        super(cause);
+    }
 
-    Annotation[] getAnnotations();
-
-    <T extends Annotation> T getAnnotation(Class<T> annotationType);
-
-    boolean isAnnotationPresent(Class<? extends Annotation> annotationType);
+    public CannotParseArgumentException(String message, Throwable cause){
+        super(message, cause);
+    }
 
 }

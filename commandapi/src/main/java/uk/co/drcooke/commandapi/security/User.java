@@ -14,18 +14,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package uk.co.drcooke.commandapi.execution;
+package uk.co.drcooke.commandapi.security;
 
-import uk.co.drcooke.commandapi.argument.parsing.CommandParameter;
-import uk.co.drcooke.commandapi.security.User;
-
-import java.util.List;
-
-public interface CommandExecutor {
-
-    public ExitCode execute(ArgumentManifest argumentManifest);
-    String getName();
-    List<CommandParameter> getCommandParameters();
-    boolean canExecute(User user);
-
+public interface User {
 }

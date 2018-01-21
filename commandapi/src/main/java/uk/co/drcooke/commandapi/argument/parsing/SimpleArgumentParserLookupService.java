@@ -14,18 +14,25 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package uk.co.drcooke.commandapi.execution;
+package uk.co.drcooke.commandapi.argument.parsing;
 
-import uk.co.drcooke.commandapi.argument.parsing.CommandParameter;
-import uk.co.drcooke.commandapi.security.User;
+import java.util.Collection;
 
-import java.util.List;
+public class SimpleArgumentParserLookupService implements ArgumentParserLookupService{
 
-public interface CommandExecutor {
+    private Collection<ArgumentParser<?>> argumentParsers;
 
-    public ExitCode execute(ArgumentManifest argumentManifest);
-    String getName();
-    List<CommandParameter> getCommandParameters();
-    boolean canExecute(User user);
+    public SimpleArgumentParserLookupService(Collection<ArgumentParser<?>> argumentParsers){
+        this.argumentParsers = argumentParsers;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> ArgumentParser<T> getArgumentParserForParameter(CommandParameter commandParameter) throws CannotParseArgumentException {
+        return (ArgumentParser<T>) argumentParsers.stream()
+                .filter(argumentParser -> argumentParser.canParseParameter(commandParameter))
+                .findFirst()
+                .orElseThrow(() -> new CannotParseArgumentException("Cannot find parser for argument"));
+    }
 
 }

@@ -18,7 +18,7 @@ package uk.co.drcooke.commandapi.argument.parsing.text.string;
 
 import uk.co.drcooke.commandapi.annotations.argument.Exhaustive;
 import uk.co.drcooke.commandapi.argument.parsing.ArgumentParser;
-import uk.co.drcooke.commandapi.execution.argument.CommandParameter;
+import uk.co.drcooke.commandapi.argument.parsing.CommandParameter;
 
 import java.util.Deque;
 import java.util.StringJoiner;

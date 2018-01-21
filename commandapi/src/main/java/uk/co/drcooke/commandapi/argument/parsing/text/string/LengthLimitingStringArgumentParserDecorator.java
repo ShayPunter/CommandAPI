@@ -19,7 +19,7 @@ package uk.co.drcooke.commandapi.argument.parsing.text.string;
 import uk.co.drcooke.commandapi.annotations.argument.validation.Length;
 import uk.co.drcooke.commandapi.argument.parsing.ArgumentParser;
 import uk.co.drcooke.commandapi.argument.parsing.IllegalInputException;
-import uk.co.drcooke.commandapi.execution.argument.CommandParameter;
+import uk.co.drcooke.commandapi.argument.parsing.CommandParameter;
 
 import java.util.Deque;
 

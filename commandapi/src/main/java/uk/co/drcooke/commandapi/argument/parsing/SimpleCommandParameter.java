@@ -14,18 +14,45 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package uk.co.drcooke.commandapi.execution;
+package uk.co.drcooke.commandapi.argument.parsing;
 
 import uk.co.drcooke.commandapi.argument.parsing.CommandParameter;
-import uk.co.drcooke.commandapi.security.User;
 
-import java.util.List;
+import java.lang.annotation.Annotation;
 
-public interface CommandExecutor {
+public class SimpleCommandParameter implements CommandParameter {
 
-    public ExitCode execute(ArgumentManifest argumentManifest);
-    String getName();
-    List<CommandParameter> getCommandParameters();
-    boolean canExecute(User user);
+    private final Class<?> type;
+    private final Annotation[] annotations;
 
+    public SimpleCommandParameter(Class<?> type, Annotation[] annotations) {
+        this.type = type;
+        this.annotations = annotations;
+    }
+
+    @Override
+    public Class<?> getType() {
+        return type;
+    }
+
+    @Override
+    public Annotation[] getAnnotations() {
+        return annotations;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T extends Annotation> T getAnnotation(Class<T> annotationType) {
+        for(Annotation annotation : annotations){
+            if(annotation.annotationType() == annotationType){
+                return (T)annotation;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public boolean isAnnotationPresent(Class<? extends Annotation> annotationType) {
+        return getAnnotation(annotationType) != null;
+    }
 }

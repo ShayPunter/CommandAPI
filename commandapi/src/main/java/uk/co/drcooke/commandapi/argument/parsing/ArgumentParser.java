@@ -16,8 +16,6 @@
 
 package uk.co.drcooke.commandapi.argument.parsing;
 
-import uk.co.drcooke.commandapi.execution.argument.CommandParameter;
-
 import java.util.Deque;
 
 public interface ArgumentParser<T> {

@@ -14,43 +14,26 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package uk.co.drcooke.commandapi.execution.argument;
+package uk.co.drcooke.commandapi.argument.parsing;
 
-import java.lang.annotation.Annotation;
+import uk.co.drcooke.commandapi.execution.ArgumentManifest;
+import uk.co.drcooke.commandapi.execution.CommandExecutor;
 
-public class SimpleCommandParameter implements CommandParameter{
+import java.util.ArrayList;
+import java.util.Deque;
 
-    private final Class<?> type;
-    private final Annotation[] annotations;
+public class SimpleCommandArgumentConverterService implements CommandArgumentConverterService{
 
-    public SimpleCommandParameter(Class<?> type, Annotation[] annotations) {
-        this.type = type;
-        this.annotations = annotations;
-    }
-
-    @Override
-    public Class<?> getType() {
-        return type;
-    }
+    private ArgumentParserLookupService argumentParserLookupService = new SimpleArgumentParserLookupService(
+            ArgumentParserLookupService.getBuiltinArgumentParsers());
 
     @Override
-    public Annotation[] getAnnotations() {
-        return annotations;
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public <T extends Annotation> T getAnnotation(Class<T> annotationType) {
-        for(Annotation annotation : annotations){
-            if(annotation.annotationType() == annotationType){
-                return (T)annotation;
-            }
+    public ArgumentManifest getArgumentManifest(CommandExecutor commandExecutor, Deque<String> arguments) {
+        ArrayList<Object> parsedArguments = new ArrayList<>();
+        for(CommandParameter commandParameter : commandExecutor.getCommandParameters()){
+            parsedArguments.add(argumentParserLookupService
+                    .getArgumentParserForParameter(commandParameter).parse(arguments, commandParameter));
         }
-        return null;
-    }
-
-    @Override
-    public boolean isAnnotationPresent(Class<? extends Annotation> annotationType) {
-        return getAnnotation(annotationType) != null;
+        return new ArgumentManifest(parsedArguments);
     }
 }
