@@ -21,7 +21,7 @@ import uk.co.drcooke.commandapi.security.User;
 
 import java.util.List;
 
-public interface CommandExecutor {
+public interface CommandExecutable {
 
     public ExitCode execute(ArgumentManifest argumentManifest);
     String getName();

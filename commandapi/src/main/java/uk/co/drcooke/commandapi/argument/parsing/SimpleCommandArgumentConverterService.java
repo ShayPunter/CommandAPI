@@ -17,7 +17,7 @@
 package uk.co.drcooke.commandapi.argument.parsing;
 
 import uk.co.drcooke.commandapi.execution.ArgumentManifest;
-import uk.co.drcooke.commandapi.execution.CommandExecutor;
+import uk.co.drcooke.commandapi.execution.CommandExecutable;
 
 import java.util.ArrayList;
 import java.util.Deque;
@@ -28,9 +28,9 @@ public class SimpleCommandArgumentConverterService implements CommandArgumentCon
             ArgumentParserLookupService.getBuiltinArgumentParsers());
 
     @Override
-    public ArgumentManifest getArgumentManifest(CommandExecutor commandExecutor, Deque<String> arguments) {
+    public ArgumentManifest getArgumentManifest(CommandExecutable commandExecutable, Deque<String> arguments) {
         ArrayList<Object> parsedArguments = new ArrayList<>();
-        for(CommandParameter commandParameter : commandExecutor.getCommandParameters()){
+        for(CommandParameter commandParameter : commandExecutable.getCommandParameters()){
             parsedArguments.add(argumentParserLookupService
                     .getArgumentParserForParameter(commandParameter).parse(arguments, commandParameter));
         }

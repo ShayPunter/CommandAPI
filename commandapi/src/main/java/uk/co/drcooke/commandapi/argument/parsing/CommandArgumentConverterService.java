@@ -17,10 +17,10 @@
 package uk.co.drcooke.commandapi.argument.parsing;
 
 import uk.co.drcooke.commandapi.execution.ArgumentManifest;
-import uk.co.drcooke.commandapi.execution.CommandExecutor;
+import uk.co.drcooke.commandapi.execution.CommandExecutable;
 
 import java.util.Deque;
 
 public interface CommandArgumentConverterService {
-    ArgumentManifest getArgumentManifest(CommandExecutor commandExecutor, Deque<String> arguments);
+    ArgumentManifest getArgumentManifest(CommandExecutable commandExecutable, Deque<String> arguments);
 }
