@@ -14,16 +14,18 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package uk.co.drcooke.commandapi.annotations.argument.validation;
+package uk.co.drcooke.commandapi.execution.argument;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.Annotation;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.PARAMETER)
-public @interface Length {
-    int minLength();
-    int maxLength();
+public interface CommandParameter {
+
+    Class<?> getType();
+
+    Annotation[] getAnnotations();
+
+    <T extends Annotation> T getAnnotation(Class<T> annotationType);
+
+    boolean isAnnotationPresent(Class<? extends Annotation> annotationType);
+
 }

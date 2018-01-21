@@ -14,20 +14,20 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package uk.co.drcooke.commandapi.parsing;
+package uk.co.drcooke.commandapi.argument.lexing;
 
-import java.util.Deque;
+public class CommandTokenisingException extends RuntimeException{
 
-public interface CommandArgumentParser {
-
-    Deque<String> parseCommand(String command);
-
-    static CommandArgumentParser simple(){
-        return new SimpleCommandArgumentParser();
+    public CommandTokenisingException(String message){
+        super(message);
     }
 
-    static CommandArgumentParser lexical(){
-        return new LexicalCommandArgumentParser();
+    public CommandTokenisingException(Throwable cause){
+        super(cause);
+    }
+
+    public CommandTokenisingException(String message, Throwable cause){
+        super(message, cause);
     }
 
 }

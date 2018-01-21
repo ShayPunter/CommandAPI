@@ -14,20 +14,24 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package uk.co.drcooke.commandapi.parsing;
+package uk.co.drcooke.commandapi.execution;
 
-public class CommandParsingException extends RuntimeException{
+public enum ExitCode {
+    SUCCESS(0, "SUCCESS"), FAILURE(1, "FAILURE"), INVALID(2, "INVALID");
 
-    public CommandParsingException(String message){
-        super(message);
+    int code;
+    String name;
+
+    ExitCode(int code, String name) {
+        this.code = code;
+        this.name = name;
     }
 
-    public CommandParsingException(Throwable cause){
-        super(cause);
+    public int getCode() {
+        return code;
     }
 
-    public CommandParsingException(String message, Throwable cause){
-        super(message, cause);
+    public String getName() {
+        return name;
     }
-
 }

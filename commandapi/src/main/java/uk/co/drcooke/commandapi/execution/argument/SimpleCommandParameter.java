@@ -14,16 +14,43 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package uk.co.drcooke.commandapi.parsing;
+package uk.co.drcooke.commandapi.execution.argument;
 
-import java.util.ArrayDeque;
-import java.util.Arrays;
-import java.util.Deque;
+import java.lang.annotation.Annotation;
 
-final class SimpleCommandArgumentParser implements CommandArgumentParser{
+public class SimpleCommandParameter implements CommandParameter{
 
-    public Deque<String> parseCommand(String command) {
-        return new ArrayDeque<>(Arrays.asList(command.split(" ")));
+    private final Class<?> type;
+    private final Annotation[] annotations;
+
+    public SimpleCommandParameter(Class<?> type, Annotation[] annotations) {
+        this.type = type;
+        this.annotations = annotations;
     }
 
+    @Override
+    public Class<?> getType() {
+        return type;
+    }
+
+    @Override
+    public Annotation[] getAnnotations() {
+        return annotations;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T extends Annotation> T getAnnotation(Class<T> annotationType) {
+        for(Annotation annotation : annotations){
+            if(annotation.annotationType() == annotationType){
+                return (T)annotation;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public boolean isAnnotationPresent(Class<? extends Annotation> annotationType) {
+        return getAnnotation(annotationType) != null;
+    }
 }

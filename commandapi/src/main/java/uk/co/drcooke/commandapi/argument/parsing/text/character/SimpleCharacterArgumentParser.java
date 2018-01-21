@@ -14,16 +14,28 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package uk.co.drcooke.commandapi.annotations.argument.validation;
+package uk.co.drcooke.commandapi.argument.parsing.text.character;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import uk.co.drcooke.commandapi.argument.parsing.ArgumentParser;
+import uk.co.drcooke.commandapi.argument.parsing.IllegalInputException;
+import uk.co.drcooke.commandapi.execution.argument.CommandParameter;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.PARAMETER)
-public @interface Length {
-    int minLength();
-    int maxLength();
+import java.util.Deque;
+
+public enum SimpleCharacterArgumentParser implements ArgumentParser<Character>{
+    INSTANCE;
+
+    @Override
+    public Character parse(Deque<String> arguments, CommandParameter commandParameter) {
+        String argument = arguments.pop();
+        if(argument.length() != 1){
+            throw new IllegalInputException("Argument is not a character.");
+        }
+        return argument.charAt(0);
+    }
+
+    @Override
+    public boolean canParseParameter(CommandParameter commandParameter) {
+        return commandParameter.getType() == Character.class;
+    }
 }

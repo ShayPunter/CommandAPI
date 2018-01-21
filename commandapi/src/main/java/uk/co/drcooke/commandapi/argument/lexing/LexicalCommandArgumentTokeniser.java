@@ -14,12 +14,12 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package uk.co.drcooke.commandapi.parsing;
+package uk.co.drcooke.commandapi.argument.lexing;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-final class LexicalCommandArgumentParser implements CommandArgumentParser{
+final class LexicalCommandArgumentTokeniser implements CommandArgumentTokeniser {
 
     @Override
     public Deque<String> parseCommand(String command) {
@@ -58,10 +58,10 @@ final class LexicalCommandArgumentParser implements CommandArgumentParser{
             }
         }
         if(quoted){
-            throw new CommandParsingException("Unfinished quotes in command.");
+            throw new CommandTokenisingException("Unfinished quotes in command.");
         }
         if(escaped){
-            throw new CommandParsingException("Unused escape character");
+            throw new CommandTokenisingException("Unused escape character");
         }
         return arguments;
     }

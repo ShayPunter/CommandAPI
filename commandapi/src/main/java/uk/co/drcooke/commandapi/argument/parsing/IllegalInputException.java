@@ -14,16 +14,20 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package uk.co.drcooke.commandapi.annotations.argument.validation;
+package uk.co.drcooke.commandapi.argument.parsing;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+public class IllegalInputException extends RuntimeException{
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.PARAMETER)
-public @interface Length {
-    int minLength();
-    int maxLength();
+    public IllegalInputException(String message){
+        super(message);
+    }
+
+    public IllegalInputException(Throwable cause){
+        super(cause);
+    }
+
+    public IllegalInputException(String message, Throwable cause){
+        super(message, cause);
+    }
+
 }

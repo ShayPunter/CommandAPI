@@ -14,16 +14,20 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package uk.co.drcooke.commandapi.annotations.argument.validation;
+package uk.co.drcooke.commandapi.execution;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.util.Collections;
+import java.util.List;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.PARAMETER)
-public @interface Length {
-    int minLength();
-    int maxLength();
+public class ArgumentManifest {
+
+    private final List<Object> arguments;
+
+    public ArgumentManifest(List<Object> arguments) {
+        this.arguments = Collections.unmodifiableList(arguments);
+    }
+
+    public List<Object> getArguments() {
+        return arguments;
+    }
 }

@@ -14,16 +14,35 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package uk.co.drcooke.commandapi.annotations.argument.validation;
+package uk.co.drcooke.commandapi.argument.parsing.text.string;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import uk.co.drcooke.commandapi.annotations.argument.Exhaustive;
+import uk.co.drcooke.commandapi.argument.parsing.ArgumentParser;
+import uk.co.drcooke.commandapi.execution.argument.CommandParameter;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.PARAMETER)
-public @interface Length {
-    int minLength();
-    int maxLength();
+import java.util.Deque;
+import java.util.StringJoiner;
+
+public enum SimpleStringArgumentParser implements ArgumentParser<String>{
+    INSTANCE;
+
+    @Override
+    public String parse(Deque<String> arguments, CommandParameter commandParameter) {
+        if(commandParameter.isAnnotationPresent(Exhaustive.class)){
+            StringJoiner stringJoiner = new StringJoiner(" ");
+
+            while(!arguments.isEmpty()){
+                stringJoiner.add(arguments.pop());
+            }
+
+            return stringJoiner.toString();
+        }else{
+            return arguments.pop();
+        }
+    }
+
+    @Override
+    public boolean canParseParameter(CommandParameter commandParameter) {
+        return false;
+    }
 }

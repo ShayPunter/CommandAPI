@@ -14,16 +14,16 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package uk.co.drcooke.commandapi.annotations.argument.validation;
+package uk.co.drcooke.commandapi.argument.lexing;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.Deque;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.PARAMETER)
-public @interface Length {
-    int minLength();
-    int maxLength();
+final class SimpleCommandArgumentTokeniser implements CommandArgumentTokeniser {
+
+    public Deque<String> parseCommand(String command) {
+        return new ArrayDeque<>(Arrays.asList(command.split(" ")));
+    }
+
 }
