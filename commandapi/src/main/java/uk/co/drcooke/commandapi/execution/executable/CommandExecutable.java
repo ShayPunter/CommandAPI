@@ -14,7 +14,22 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package uk.co.drcooke.commandapi;
+package uk.co.drcooke.commandapi.execution.executable;
 
-public enum CommandManager {
+import uk.co.drcooke.commandapi.argument.parsing.CommandParameter;
+import uk.co.drcooke.commandapi.execution.ArgumentManifest;
+import uk.co.drcooke.commandapi.execution.ExitCode;
+import uk.co.drcooke.commandapi.security.User;
+
+import java.util.List;
+
+public interface CommandExecutable {
+
+    ExitCode execute(User user, ArgumentManifest argumentManifest);
+    String getName();
+    List<CommandParameter> getCommandParameters();
+    default boolean canExecute(User user){
+        return true;
+    }
+
 }

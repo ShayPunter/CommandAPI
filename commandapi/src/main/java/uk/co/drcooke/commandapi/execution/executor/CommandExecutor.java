@@ -14,13 +14,16 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package uk.co.drcooke.commandapi.argument.parsing;
+package uk.co.drcooke.commandapi.execution.executor;
 
-import uk.co.drcooke.commandapi.execution.ArgumentManifest;
+import uk.co.drcooke.commandapi.execution.ExitCode;
 import uk.co.drcooke.commandapi.execution.executable.CommandExecutable;
+import uk.co.drcooke.commandapi.security.User;
 
 import java.util.Deque;
 
-public interface CommandArgumentConverterService {
-    ArgumentManifest getArgumentManifest(CommandExecutable commandExecutable, Deque<String> arguments);
+public interface CommandExecutor {
+
+    ExitCode execute(CommandExecutable executable, Deque<String> arguments, User user);
+
 }

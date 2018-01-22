@@ -17,7 +17,7 @@
 package uk.co.drcooke.commandapi.argument.parsing;
 
 import uk.co.drcooke.commandapi.execution.ArgumentManifest;
-import uk.co.drcooke.commandapi.execution.CommandExecutable;
+import uk.co.drcooke.commandapi.execution.executable.CommandExecutable;
 
 import java.util.ArrayList;
 import java.util.Deque;

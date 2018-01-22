@@ -17,4 +17,8 @@
 package uk.co.drcooke.commandapi.security;
 
 public interface User {
+
+    String getName();
+    boolean hasPermission(String permission);
+
 }

@@ -14,18 +14,43 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package uk.co.drcooke.commandapi.execution;
+package uk.co.drcooke.commandapi.execution.executable;
 
 import uk.co.drcooke.commandapi.argument.parsing.CommandParameter;
+import uk.co.drcooke.commandapi.execution.ArgumentManifest;
+import uk.co.drcooke.commandapi.execution.ExitCode;
 import uk.co.drcooke.commandapi.security.User;
 
 import java.util.List;
+import java.util.function.Function;
 
-public interface CommandExecutable {
+public class SimpleCommandExecutable implements CommandExecutable {
 
-    public ExitCode execute(ArgumentManifest argumentManifest);
-    String getName();
-    List<CommandParameter> getCommandParameters();
-    boolean canExecute(User user);
+    private final String name;
+    private final List<CommandParameter> commandParameters;
+    private final Function<ArgumentManifest, ExitCode> commandExecutionFunction;
+
+    public SimpleCommandExecutable(String name, List<CommandParameter> commandParameters,
+                                   Function<ArgumentManifest, ExitCode> commandExecutionFunction) {
+        this.name = name;
+        this.commandParameters = commandParameters;
+        this.commandExecutionFunction = commandExecutionFunction;
+    }
+
+
+    @Override
+    public ExitCode execute(User user, ArgumentManifest argumentManifest) {
+        return commandExecutionFunction.apply(argumentManifest);
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public List<CommandParameter> getCommandParameters() {
+        return commandParameters;
+    }
 
 }
