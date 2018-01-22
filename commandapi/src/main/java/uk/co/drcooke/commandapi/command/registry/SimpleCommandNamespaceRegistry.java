@@ -14,43 +14,41 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package uk.co.drcooke.commandapi.argument.parsing;
+package uk.co.drcooke.commandapi.command.registry;
 
-import java.lang.annotation.Annotation;
+import uk.co.drcooke.commandapi.command.namespace.CommandNamespace;
+import uk.co.drcooke.commandapi.command.scanning.CommandScanner;
 
-public class SimpleCommandParameter implements CommandParameter {
+import java.util.HashMap;
+import java.util.Map;
 
-    private final Class<?> type;
-    private final Annotation[] annotations;
+public class SimpleCommandNamespaceRegistry implements CommandNamespaceRegistry {
 
-    public SimpleCommandParameter(Class<?> type, Annotation[] annotations) {
-        this.type = type;
-        this.annotations = annotations;
+    private final Map<String, CommandNamespace> COMMAND_NAMESPACE_MAP;
+    private final Map<Object, String> OBJECT_NAMESPACE_MAP;
+    private final CommandScanner COMMAND_SCANNER;
+
+    public SimpleCommandNamespaceRegistry(CommandScanner commandScanner) {
+        COMMAND_NAMESPACE_MAP = new HashMap<>();
+        OBJECT_NAMESPACE_MAP = new HashMap<>();
+        COMMAND_SCANNER = commandScanner;
     }
 
     @Override
-    public Class<?> getType() {
-        return type;
+    public CommandNamespace getCommandNamespace(String command) {
+        return COMMAND_NAMESPACE_MAP.get(command);
     }
 
     @Override
-    public Annotation[] getAnnotations() {
-        return annotations;
+    public void register(Object o) {
+        CommandNamespace namespace = COMMAND_SCANNER.getCommands(o);
+        COMMAND_NAMESPACE_MAP.put(namespace.getName(), namespace);
+        OBJECT_NAMESPACE_MAP.put(o, namespace.getName());
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public <T extends Annotation> T getAnnotation(Class<T> annotationType) {
-        for(Annotation annotation : annotations){
-            if(annotation.annotationType() == annotationType){
-                return (T)annotation;
-            }
-        }
-        return null;
+    public void unregister(Object o) {
+        COMMAND_NAMESPACE_MAP.remove(OBJECT_NAMESPACE_MAP.get(o));
     }
 
-    @Override
-    public boolean isAnnotationPresent(Class<? extends Annotation> annotationType) {
-        return getAnnotation(annotationType) != null;
-    }
 }

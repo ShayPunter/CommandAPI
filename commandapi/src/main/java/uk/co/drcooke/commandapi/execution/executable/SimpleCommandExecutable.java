@@ -27,6 +27,8 @@ import java.util.function.Function;
 public class SimpleCommandExecutable implements CommandExecutable {
 
     private final String name;
+    private String usage;
+    private String description;
     private final List<CommandParameter> commandParameters;
     private final Function<ArgumentManifest, ExitCode> commandExecutionFunction;
 
@@ -38,6 +40,7 @@ public class SimpleCommandExecutable implements CommandExecutable {
     }
 
 
+
     @Override
     public ExitCode execute(User user, ArgumentManifest argumentManifest) {
         return commandExecutionFunction.apply(argumentManifest);
@@ -46,6 +49,26 @@ public class SimpleCommandExecutable implements CommandExecutable {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String getUsage() {
+        return usage;
+    }
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public void setUsage(String usage) {
+        this.usage = usage;
+    }
+
+    @Override
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override

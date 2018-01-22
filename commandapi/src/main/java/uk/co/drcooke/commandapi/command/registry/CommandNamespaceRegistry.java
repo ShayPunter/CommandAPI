@@ -14,43 +14,14 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package uk.co.drcooke.commandapi.argument.parsing;
+package uk.co.drcooke.commandapi.command.registry;
 
-import java.lang.annotation.Annotation;
+import uk.co.drcooke.commandapi.command.namespace.CommandNamespace;
 
-public class SimpleCommandParameter implements CommandParameter {
+public interface CommandNamespaceRegistry {
 
-    private final Class<?> type;
-    private final Annotation[] annotations;
+    CommandNamespace getCommandNamespace(String command);
+    void register(Object o);
+    void unregister(Object o);
 
-    public SimpleCommandParameter(Class<?> type, Annotation[] annotations) {
-        this.type = type;
-        this.annotations = annotations;
-    }
-
-    @Override
-    public Class<?> getType() {
-        return type;
-    }
-
-    @Override
-    public Annotation[] getAnnotations() {
-        return annotations;
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public <T extends Annotation> T getAnnotation(Class<T> annotationType) {
-        for(Annotation annotation : annotations){
-            if(annotation.annotationType() == annotationType){
-                return (T)annotation;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public boolean isAnnotationPresent(Class<? extends Annotation> annotationType) {
-        return getAnnotation(annotationType) != null;
-    }
 }

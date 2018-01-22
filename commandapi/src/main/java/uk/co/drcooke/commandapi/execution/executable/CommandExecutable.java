@@ -27,6 +27,10 @@ public interface CommandExecutable {
 
     ExitCode execute(User user, ArgumentManifest argumentManifest);
     String getName();
+    String getUsage();
+    String getDescription();
+    void setUsage(String usage);
+    void setDescription(String description);
     List<CommandParameter> getCommandParameters();
     default boolean canExecute(User user){
         return true;
