@@ -16,5 +16,23 @@
 
 package uk.co.drcooke.commandapi.command;
 
+import uk.co.drcooke.commandapi.argument.lexing.CommandArgumentTokeniser;
+import uk.co.drcooke.commandapi.argument.parsing.CommandArgumentConverterService;
+import uk.co.drcooke.commandapi.command.lookup.CommandLookup;
+import uk.co.drcooke.commandapi.command.registry.CommandNamespaceRegistry;
+import uk.co.drcooke.commandapi.execution.ExitCode;
+import uk.co.drcooke.commandapi.execution.executor.CommandExecutor;
+
 public interface CommandShell {
+
+    ExitCode execute(String input);
+    public CommandNamespaceRegistry getCommandNamespaceRegistry();
+
+    public CommandArgumentTokeniser getCommandArgumentTokeniser();
+
+    public CommandArgumentConverterService getCommandArgumentConverterService();
+
+    public CommandLookup getCommandLookup();
+
+    public CommandExecutor getCommandExecutor();
 }

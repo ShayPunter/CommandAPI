@@ -14,29 +14,29 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package uk.co.drcooke.commandapi.argument.parsing;
+package uk.co.drcooke.commandapi;
 
-import uk.co.drcooke.commandapi.execution.ArgumentManifest;
-import uk.co.drcooke.commandapi.execution.executable.CommandExecutable;
+import uk.co.drcooke.commandapi.annotations.argument.numeric.IntClamp;
+import uk.co.drcooke.commandapi.annotations.command.Command;
+import uk.co.drcooke.commandapi.annotations.command.DefaultHandler;
+import uk.co.drcooke.commandapi.annotations.command.Subcommand;
+import uk.co.drcooke.commandapi.execution.ExitCode;
 
-import java.util.ArrayList;
-import java.util.Deque;
+@Command("test")
+public class TestCommand {
 
-public class SimpleCommandArgumentConverterService implements CommandArgumentConverterService{
-
-    private ArgumentParserLookupService argumentParserLookupService;
-
-    public SimpleCommandArgumentConverterService(ArgumentParserLookupService argumentParserLookupService){
-        this.argumentParserLookupService = argumentParserLookupService;
-    }
-
-    @Override
-    public ArgumentManifest getArgumentManifest(CommandExecutable commandExecutable, Deque<String> arguments) {
-        ArrayList<Object> parsedArguments = new ArrayList<>();
-        for(CommandParameter commandParameter : commandExecutable.getCommandParameters()){
-            parsedArguments.add(argumentParserLookupService
-                    .getArgumentParserForParameter(commandParameter).parse(arguments, commandParameter));
+    @DefaultHandler
+    public ExitCode test(@IntClamp(min=0, max=10)Integer int1, Boolean bool){
+        if(int1 == 5 && bool){
+            System.out.println("It works!");
+            return ExitCode.SUCCESS;
         }
-        return new ArgumentManifest(parsedArguments);
+        return ExitCode.FAILURE;
     }
+
+    @Subcommand("test")
+    public ExitCode test(){
+        return ExitCode.SUCCESS;
+    }
+
 }

@@ -58,7 +58,7 @@ final class LexicalCommandArgumentTokeniser implements CommandArgumentTokeniser 
             }
         }
         if(quoted){
-            throw new CommandTokenisingException("Unfinished quotes in command.");
+            throw new CommandTokenisingException("Unfinished quotes in value.");
         }
         if(escaped){
             throw new CommandTokenisingException("Unused escape character");

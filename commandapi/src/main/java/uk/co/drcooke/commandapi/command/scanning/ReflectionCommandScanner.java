@@ -49,7 +49,7 @@ public class ReflectionCommandScanner implements CommandScanner{
 
     private CommandNamespace getEmptyCommandNamespace(Class clazz){
         Command commandAnnotation = (Command)clazz.getAnnotation(Command.class);
-        String name = commandAnnotation.command();
+        String name = commandAnnotation.value();
         SimpleCommandNamespace commandNamespace = new SimpleCommandNamespace(name);
         Usage usage = (Usage)clazz.getAnnotation(Usage.class);
         if(usage != null){
@@ -87,7 +87,7 @@ public class ReflectionCommandScanner implements CommandScanner{
                 Annotation[] annotations = parameter.getAnnotations();
                 commandParameters.add(new SimpleCommandParameter(type, annotations));
             }
-            CommandExecutable commandExecutable = new SimpleCommandExecutable(subcommand.command(), commandParameters, argumentManifest -> {
+            CommandExecutable commandExecutable = new SimpleCommandExecutable(subcommand.value(), commandParameters, argumentManifest -> {
                 try {
                     return (ExitCode)method.invoke(parent, argumentManifest.getArguments().toArray());
                 } catch (IllegalAccessException | InvocationTargetException e) {
