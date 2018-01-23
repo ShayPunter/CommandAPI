@@ -78,4 +78,14 @@ public class SimpleCommandShell implements CommandShell{
     public CommandExecutor getCommandExecutor() {
         return commandExecutor;
     }
+
+    @Override
+    public void register(Object o) {
+        commandNamespaceRegistry.register(o);
+    }
+
+    @Override
+    public void unregister(Object o) {
+        commandNamespaceRegistry.unregister(o);
+    }
 }

@@ -14,30 +14,20 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package uk.co.drcooke.commandapi.command;
+package uk.co.drcooke.commandapi;
 
-import uk.co.drcooke.commandapi.argument.lexing.CommandArgumentTokeniser;
-import uk.co.drcooke.commandapi.argument.parsing.CommandArgumentConverterService;
-import uk.co.drcooke.commandapi.command.lookup.CommandLookup;
-import uk.co.drcooke.commandapi.command.registry.CommandNamespaceRegistry;
-import uk.co.drcooke.commandapi.execution.ExitCode;
-import uk.co.drcooke.commandapi.execution.executor.CommandExecutor;
+import org.junit.jupiter.api.Test;
+import uk.co.drcooke.commandapi.command.CommandShell;
 
-public interface CommandShell {
+import java.lang.annotation.Target;
 
-    ExitCode execute(String input);
+public class CommandAPITest {
 
-    CommandNamespaceRegistry getCommandNamespaceRegistry();
-
-    CommandArgumentTokeniser getCommandArgumentTokeniser();
-
-    CommandArgumentConverterService getCommandArgumentConverterService();
-
-    CommandLookup getCommandLookup();
-
-    CommandExecutor getCommandExecutor();
-
-    void register(Object o);
-    void unregister(Object o);
+    @Test
+    public void testCommandAPI(){
+        CommandShell commandShell = CommandAPI.createSimpleCommandShell();
+        commandShell.register(new TestCommand());
+        commandShell.execute("test 5 true c");
+    }
 
 }
