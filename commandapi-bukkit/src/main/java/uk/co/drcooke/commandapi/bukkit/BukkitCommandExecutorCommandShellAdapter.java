@@ -14,32 +14,35 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package uk.co.drcooke.commandapi.command;
+package uk.co.drcooke.commandapi.bukkit;
 
-import uk.co.drcooke.commandapi.argument.lexing.CommandArgumentTokeniser;
-import uk.co.drcooke.commandapi.argument.parsing.CommandArgumentConverterService;
-import uk.co.drcooke.commandapi.command.lookup.CommandLookup;
-import uk.co.drcooke.commandapi.command.registry.CommandNamespaceRegistry;
-import uk.co.drcooke.commandapi.execution.ExitCode;
-import uk.co.drcooke.commandapi.execution.executor.CommandExecutor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import uk.co.drcooke.commandapi.bukkit.player.BukkitUser;
+import uk.co.drcooke.commandapi.command.CommandShell;
 import uk.co.drcooke.commandapi.security.User;
 
-public interface CommandShell {
+import java.util.StringJoiner;
 
-    ExitCode execute(String input, User user);
+public class BukkitCommandExecutorCommandShellAdapter implements CommandExecutor{
 
-    CommandNamespaceRegistry getCommandNamespaceRegistry();
+    private CommandShell commandShell;
 
-    CommandArgumentTokeniser getCommandArgumentTokeniser();
+    public BukkitCommandExecutorCommandShellAdapter(CommandShell commandShell) {
+        this.commandShell = commandShell;
+    }
 
-    CommandArgumentConverterService getCommandArgumentConverterService();
-
-    CommandLookup getCommandLookup();
-
-    CommandExecutor getCommandExecutor();
-
-    void register(Object o);
-
-    void unregister(Object o);
+    @Override
+    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
+        User user = new BukkitUser(commandSender);
+        StringJoiner joiner = new StringJoiner(" ");
+        joiner.add(s);
+        for(String arg : strings){
+            joiner.add(arg);
+        }
+        commandShell.execute(joiner.toString(), user);
+        return true;
+    }
 
 }

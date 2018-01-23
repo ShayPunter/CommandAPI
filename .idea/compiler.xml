@@ -7,10 +7,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="commandapi" />
+        <module name="commandapi-bukkit" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="commandapi" target="1.8" />
+      <module name="commandapi-bukkit" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

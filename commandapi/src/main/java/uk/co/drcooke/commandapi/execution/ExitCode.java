@@ -17,7 +17,7 @@
 package uk.co.drcooke.commandapi.execution;
 
 public enum ExitCode {
-    SUCCESS(0, "SUCCESS"), FAILURE(1, "FAILURE"), INVALID(2, "INVALID");
+    SUCCESS(0, "SUCCESS"), FAILURE(1, "FAILURE"), INVALID(2, "INVALID"), NO_PERMISSION(3, "NO_PERMISSION");
 
     int code;
     String name;

@@ -14,20 +14,30 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package uk.co.drcooke.commandapi.command;
+package uk.co.drcooke.commandapi.bukkit;
 
 import uk.co.drcooke.commandapi.argument.lexing.CommandArgumentTokeniser;
+import uk.co.drcooke.commandapi.argument.parsing.ArgumentParserLookupService;
 import uk.co.drcooke.commandapi.argument.parsing.CommandArgumentConverterService;
+import uk.co.drcooke.commandapi.argument.parsing.SimpleArgumentParserLookupService;
+import uk.co.drcooke.commandapi.argument.parsing.SimpleCommandArgumentConverterService;
+import uk.co.drcooke.commandapi.bukkit.security.PermissionCheckingCommandExecutorDecorator;
+import uk.co.drcooke.commandapi.command.CommandShell;
+import uk.co.drcooke.commandapi.command.SimpleCommandShell;
 import uk.co.drcooke.commandapi.command.lookup.CommandLookup;
+import uk.co.drcooke.commandapi.command.lookup.SimpleCommandLookupService;
 import uk.co.drcooke.commandapi.command.registry.CommandNamespaceRegistry;
+import uk.co.drcooke.commandapi.command.registry.SimpleCommandNamespaceRegistry;
+import uk.co.drcooke.commandapi.command.scanning.ReflectionCommandScanner;
 import uk.co.drcooke.commandapi.execution.ExitCode;
 import uk.co.drcooke.commandapi.execution.executable.CommandExecutable;
 import uk.co.drcooke.commandapi.execution.executor.CommandExecutor;
+import uk.co.drcooke.commandapi.execution.executor.SimpleCommandExecutor;
 import uk.co.drcooke.commandapi.security.User;
 
 import java.util.Deque;
 
-public class SimpleCommandShell implements CommandShell {
+public class BukkitCommandShell implements CommandShell {
 
     private final CommandNamespaceRegistry commandNamespaceRegistry;
     private final CommandArgumentTokeniser commandArgumentTokeniser;
@@ -35,7 +45,7 @@ public class SimpleCommandShell implements CommandShell {
     private final CommandLookup commandLookup;
     private final CommandExecutor commandExecutor;
 
-    public SimpleCommandShell(CommandNamespaceRegistry commandNamespaceRegistry,
+    public BukkitCommandShell(CommandNamespaceRegistry commandNamespaceRegistry,
                               CommandArgumentTokeniser commandArgumentTokeniser,
                               CommandArgumentConverterService commandArgumentConverterService,
                               CommandLookup commandLookup, CommandExecutor commandExecutor) {
@@ -82,4 +92,14 @@ public class SimpleCommandShell implements CommandShell {
     public void unregister(Object o) {
         commandNamespaceRegistry.unregister(o);
     }
+
+    public static CommandShell create(){
+        CommandNamespaceRegistry commandNamespaceRegistry = new SimpleCommandNamespaceRegistry(new ReflectionCommandScanner());
+        CommandArgumentConverterService commandArgumentConverterService = new SimpleCommandArgumentConverterService(
+                new SimpleArgumentParserLookupService(ArgumentParserLookupService.getBuiltinArgumentParsers()));
+        return new SimpleCommandShell(commandNamespaceRegistry, CommandArgumentTokeniser.simple(),
+                commandArgumentConverterService, new SimpleCommandLookupService(commandNamespaceRegistry),
+                new PermissionCheckingCommandExecutorDecorator(new SimpleCommandExecutor(commandArgumentConverterService)));
+    }
+
 }

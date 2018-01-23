@@ -14,32 +14,27 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package uk.co.drcooke.commandapi.command;
+package uk.co.drcooke.commandapi.bukkit.player;
 
-import uk.co.drcooke.commandapi.argument.lexing.CommandArgumentTokeniser;
-import uk.co.drcooke.commandapi.argument.parsing.CommandArgumentConverterService;
-import uk.co.drcooke.commandapi.command.lookup.CommandLookup;
-import uk.co.drcooke.commandapi.command.registry.CommandNamespaceRegistry;
-import uk.co.drcooke.commandapi.execution.ExitCode;
-import uk.co.drcooke.commandapi.execution.executor.CommandExecutor;
+import org.bukkit.command.CommandSender;
 import uk.co.drcooke.commandapi.security.User;
 
-public interface CommandShell {
+public class BukkitUser implements User{
 
-    ExitCode execute(String input, User user);
+    private CommandSender commandSender;
 
-    CommandNamespaceRegistry getCommandNamespaceRegistry();
+    public BukkitUser(CommandSender commandSender) {
+        this.commandSender = commandSender;
+    }
 
-    CommandArgumentTokeniser getCommandArgumentTokeniser();
+    @Override
+    public String getName() {
+        return commandSender.getName();
+    }
 
-    CommandArgumentConverterService getCommandArgumentConverterService();
-
-    CommandLookup getCommandLookup();
-
-    CommandExecutor getCommandExecutor();
-
-    void register(Object o);
-
-    void unregister(Object o);
+    @Override
+    public boolean hasPermission(String permission) {
+        return commandSender.hasPermission(permission) || commandSender.isOp();
+    }
 
 }

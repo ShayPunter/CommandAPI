@@ -35,7 +35,7 @@ public class CommandAPI {
     public static CommandShell createSimpleCommandShell() {
         CommandNamespaceRegistry commandNamespaceRegistry = new SimpleCommandNamespaceRegistry(new ReflectionCommandScanner());
         CommandArgumentConverterService commandArgumentConverterService = new SimpleCommandArgumentConverterService(new SimpleArgumentParserLookupService(ArgumentParserLookupService.getBuiltinArgumentParsers()));
-        return new SimpleCommandShell(commandNamespaceRegistry, CommandArgumentTokeniser.simple(), commandArgumentConverterService, new SimpleCommandLookupService(commandNamespaceRegistry), new SimpleCommandExecutor(commandArgumentConverterService), new RootUser());
+        return new SimpleCommandShell(commandNamespaceRegistry, CommandArgumentTokeniser.simple(), commandArgumentConverterService, new SimpleCommandLookupService(commandNamespaceRegistry), new SimpleCommandExecutor(commandArgumentConverterService));
     }
 
 }

@@ -14,32 +14,27 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package uk.co.drcooke.commandapi.command;
+package uk.co.drcooke.commandapi.bukkit.security;
 
-import uk.co.drcooke.commandapi.argument.lexing.CommandArgumentTokeniser;
-import uk.co.drcooke.commandapi.argument.parsing.CommandArgumentConverterService;
-import uk.co.drcooke.commandapi.command.lookup.CommandLookup;
-import uk.co.drcooke.commandapi.command.registry.CommandNamespaceRegistry;
 import uk.co.drcooke.commandapi.execution.ExitCode;
+import uk.co.drcooke.commandapi.execution.executable.CommandExecutable;
 import uk.co.drcooke.commandapi.execution.executor.CommandExecutor;
 import uk.co.drcooke.commandapi.security.User;
 
-public interface CommandShell {
+import java.util.Deque;
 
-    ExitCode execute(String input, User user);
+public class PermissionCheckingCommandExecutorDecorator implements CommandExecutor{
 
-    CommandNamespaceRegistry getCommandNamespaceRegistry();
+    private final CommandExecutor commandExecutor;
 
-    CommandArgumentTokeniser getCommandArgumentTokeniser();
+    public PermissionCheckingCommandExecutorDecorator(CommandExecutor commandExecutor) {
+        this.commandExecutor = commandExecutor;
+    }
 
-    CommandArgumentConverterService getCommandArgumentConverterService();
-
-    CommandLookup getCommandLookup();
-
-    CommandExecutor getCommandExecutor();
-
-    void register(Object o);
-
-    void unregister(Object o);
-
+    @Override
+    public ExitCode execute(CommandExecutable executable, Deque<String> arguments, User user) {
+        return executable.canExecute(user)
+                ? commandExecutor.execute(executable, arguments, user)
+                : ExitCode.NO_PERMISSION;
+    }
 }

@@ -57,6 +57,7 @@ final class LexicalCommandArgumentTokeniser implements CommandArgumentTokeniser 
                 }
             }
         }
+        arguments.add(currentArgument.toString());
         if (quoted) {
             throw new CommandTokenisingException("Unfinished quotes in value.");
         }

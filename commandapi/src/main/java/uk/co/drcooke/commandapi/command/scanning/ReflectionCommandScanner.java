@@ -17,6 +17,7 @@
 package uk.co.drcooke.commandapi.command.scanning;
 
 import uk.co.drcooke.commandapi.annotations.command.*;
+import uk.co.drcooke.commandapi.annotations.security.Permission;
 import uk.co.drcooke.commandapi.argument.parsing.CommandParameter;
 import uk.co.drcooke.commandapi.argument.parsing.SimpleCommandParameter;
 import uk.co.drcooke.commandapi.command.namespace.CommandNamespace;
@@ -70,6 +71,10 @@ public class ReflectionCommandScanner implements CommandScanner {
                 Annotation[] annotations = parameter.getAnnotations();
                 commandParameters.add(new SimpleCommandParameter(type, annotations));
             }
+            String permission = "";
+            if(method.isAnnotationPresent(Permission.class)){
+                permission = method.getAnnotation(Permission.class).permission();
+            }
             CommandExecutable commandExecutable = new SimpleCommandExecutable("", commandParameters, argumentManifest -> {
                 try {
                     return (ExitCode) method.invoke(parent, argumentManifest.getArguments().toArray());
@@ -77,7 +82,7 @@ public class ReflectionCommandScanner implements CommandScanner {
                     e.printStackTrace();
                 }
                 return ExitCode.FAILURE;
-            });
+            }, permission);
             commandNamespace.setDefaultCommand(commandExecutable);
         } else if (method.isAnnotationPresent(Subcommand.class)) {
             Subcommand subcommand = method.getAnnotation(Subcommand.class);
@@ -87,6 +92,10 @@ public class ReflectionCommandScanner implements CommandScanner {
                 Annotation[] annotations = parameter.getAnnotations();
                 commandParameters.add(new SimpleCommandParameter(type, annotations));
             }
+            String permission = "";
+            if(method.isAnnotationPresent(Permission.class)){
+                permission = method.getAnnotation(Permission.class).permission();
+            }
             CommandExecutable commandExecutable = new SimpleCommandExecutable(subcommand.value(), commandParameters, argumentManifest -> {
                 try {
                     return (ExitCode) method.invoke(parent, argumentManifest.getArguments().toArray());
@@ -94,7 +103,7 @@ public class ReflectionCommandScanner implements CommandScanner {
                     e.printStackTrace();
                 }
                 return ExitCode.FAILURE;
-            });
+            }, permission);
             commandNamespace.addCommand(commandExecutable);
         }
     }
