@@ -16,11 +16,10 @@
 
 package uk.co.drcooke.commandapi.argument.parsing;
 
+import uk.co.drcooke.commandapi.argument.parsing.bool.PrimitiveWrappingBooleanArgumentParserDecorator;
 import uk.co.drcooke.commandapi.argument.parsing.bool.SimpleBooleanArgumentParser;
-import uk.co.drcooke.commandapi.argument.parsing.number.DecimalValueClampingNumberArgumentParserDecorator;
-import uk.co.drcooke.commandapi.argument.parsing.number.IntegerValueNumberArgumentParserDecorator;
-import uk.co.drcooke.commandapi.argument.parsing.number.PreciseValueClampingNumberArgumentParserDecorator;
-import uk.co.drcooke.commandapi.argument.parsing.number.SimpleNumberArgumentParser;
+import uk.co.drcooke.commandapi.argument.parsing.number.*;
+import uk.co.drcooke.commandapi.argument.parsing.text.character.PrimitiveWrappingCharacterArgumentParserDecorator;
 import uk.co.drcooke.commandapi.argument.parsing.text.character.RegularExpressionCharacterArgumentParserDecorator;
 import uk.co.drcooke.commandapi.argument.parsing.text.character.SimpleCharacterArgumentParser;
 import uk.co.drcooke.commandapi.argument.parsing.text.string.LengthLimitingStringArgumentParserDecorator;
@@ -35,22 +34,34 @@ public interface ArgumentParserLookupService {
 
     static Collection<ArgumentParser<?>> getBuiltinArgumentParsers(){
         ArrayList<ArgumentParser<?>> argumentParsers = new ArrayList<>();
-        argumentParsers.add(SimpleBooleanArgumentParser.INSTANCE);
-        argumentParsers.add(new DecimalValueClampingNumberArgumentParserDecorator(
-                new IntegerValueNumberArgumentParserDecorator(
-                        new PreciseValueClampingNumberArgumentParserDecorator(
-                                SimpleNumberArgumentParser.INSTANCE
-                        )
+        argumentParsers.add(new PrimitiveWrappingBooleanArgumentParserDecorator(
+                SimpleBooleanArgumentParser.INSTANCE
+        ));
+
+        argumentParsers.add(new PrimitiveWrappingNumberArgumentParserDecorator(
+                new DecimalValueClampingNumberArgumentParserDecorator(
+                    new IntegerValueNumberArgumentParserDecorator(
+                            new PreciseValueClampingNumberArgumentParserDecorator(
+                                    SimpleNumberArgumentParser.INSTANCE
+                            )
+                    )
                 )
-        ));
-        argumentParsers.add(new RegularExpressionCharacterArgumentParserDecorator(
-                SimpleCharacterArgumentParser.INSTANCE
-        ));
+            )
+        );
+
+        argumentParsers.add(new PrimitiveWrappingCharacterArgumentParserDecorator(
+                new RegularExpressionCharacterArgumentParserDecorator(
+                    SimpleCharacterArgumentParser.INSTANCE
+                )
+            )
+        );
+
         argumentParsers.add(new LengthLimitingStringArgumentParserDecorator(
                 new RegularExpressionStringArgumentParserDecorator(
                         SimpleStringArgumentParser.INSTANCE
                 )
         ));
+
         return argumentParsers;
     }
 
