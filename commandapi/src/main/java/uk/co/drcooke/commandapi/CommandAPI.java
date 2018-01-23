@@ -41,7 +41,7 @@ public class CommandAPI {
     public static void main(String[] args) {
         CommandShell commandShell = createSimpleCommandShell();
         commandShell.getCommandNamespaceRegistry().register(new TestCommand());
-        System.out.println(commandShell.execute("test 5").getName());
+        System.out.println(commandShell.execute("test 5 true").getName());
     }
 
 }

@@ -52,7 +52,6 @@ public enum SimpleBooleanArgumentParser implements ArgumentParser<Boolean>{
 
     @Override
     public Boolean parse(Deque<String> arguments, CommandParameter commandParameter) {
-        System.out.println("pop");
         String argument = arguments.pop();
         Boolean value = STRING_BOOLEAN_MAP.get(argument.toLowerCase());
         if(value == null){

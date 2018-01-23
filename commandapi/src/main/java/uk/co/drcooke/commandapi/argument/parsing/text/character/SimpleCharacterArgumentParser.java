@@ -27,7 +27,6 @@ public enum SimpleCharacterArgumentParser implements ArgumentParser<Character>{
 
     @Override
     public Character parse(Deque<String> arguments, CommandParameter commandParameter) {
-        System.out.println("pop");
         String argument = arguments.pop();
         if(argument.length() != 1){
             throw new IllegalInputException("Argument is not a character.");

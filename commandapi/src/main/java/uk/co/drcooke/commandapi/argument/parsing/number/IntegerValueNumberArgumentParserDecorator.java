@@ -85,7 +85,6 @@ public class IntegerValueNumberArgumentParserDecorator implements ArgumentParser
     public static Number clampIfNecessary(Number number, CommandParameter commandParameter){
         if(commandParameter.isAnnotationPresent(IntClamp.class)){
             Number n = clamp(number, commandParameter.getAnnotation(IntClamp.class));
-            System.out.println(n.getClass().getCanonicalName());
             return n;
         }else{
             return number;

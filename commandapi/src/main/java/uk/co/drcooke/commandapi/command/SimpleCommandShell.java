@@ -55,13 +55,7 @@ public class SimpleCommandShell implements CommandShell{
     @Override
     public ExitCode execute(String input) {
         Deque<String> tokens = commandArgumentTokeniser.parseCommand(input);
-        for(String s : tokens){
-            System.out.println(s);
-        }
         CommandExecutable commandExecutable = commandLookup.getCommand(tokens);
-        if(commandExecutable == null){
-            System.out.println("t");
-        }
         return commandExecutor.execute(commandExecutable, tokens, user);
     }
 

@@ -40,9 +40,6 @@ public class SimpleCommandArgumentConverterService implements CommandArgumentCon
                         .parse(arguments, commandParameter));
             }
         }
-        for(Object o : parsedArguments){
-            System.out.println(o.toString());
-        }
         return new ArgumentManifest(parsedArguments);
     }
 }
