@@ -14,26 +14,17 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package uk.co.drcooke.commandapi.execution.executable;
+package uk.co.drcooke.commandapi.security;
 
-import uk.co.drcooke.commandapi.argument.parsing.CommandParameter;
-import uk.co.drcooke.commandapi.execution.ArgumentManifest;
-import uk.co.drcooke.commandapi.execution.ExitCode;
-import uk.co.drcooke.commandapi.security.User;
+public class RootUser implements User{
 
-import java.util.List;
-
-public interface CommandExecutable {
-
-    ExitCode execute(ArgumentManifest argumentManifest);
-    String getName();
-    String getUsage();
-    String getDescription();
-    void setUsage(String usage);
-    void setDescription(String description);
-    List<CommandParameter> getCommandParameters();
-    default boolean canExecute(User user){
-        return true;
+    @Override
+    public String getName() {
+        return "root";
     }
 
+    @Override
+    public boolean hasPermission(String permission) {
+        return true;
+    }
 }

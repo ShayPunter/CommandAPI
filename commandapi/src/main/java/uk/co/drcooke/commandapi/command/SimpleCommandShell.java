@@ -19,9 +19,17 @@ package uk.co.drcooke.commandapi.command;
 import uk.co.drcooke.commandapi.argument.lexing.CommandArgumentTokeniser;
 import uk.co.drcooke.commandapi.argument.parsing.CommandArgumentConverterService;
 import uk.co.drcooke.commandapi.command.lookup.CommandLookup;
+import uk.co.drcooke.commandapi.command.namespace.CommandNamespace;
 import uk.co.drcooke.commandapi.command.registry.CommandNamespaceRegistry;
+import uk.co.drcooke.commandapi.execution.ArgumentManifest;
 import uk.co.drcooke.commandapi.execution.ExitCode;
+import uk.co.drcooke.commandapi.execution.executable.CommandExecutable;
 import uk.co.drcooke.commandapi.execution.executor.CommandExecutor;
+import uk.co.drcooke.commandapi.security.User;
+
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.Deque;
 
 public class SimpleCommandShell implements CommandShell{
 
@@ -30,21 +38,31 @@ public class SimpleCommandShell implements CommandShell{
     private final CommandArgumentConverterService commandArgumentConverterService;
     private final CommandLookup commandLookup;
     private final CommandExecutor commandExecutor;
+    private final User user;
 
     public SimpleCommandShell(CommandNamespaceRegistry commandNamespaceRegistry,
                               CommandArgumentTokeniser commandArgumentTokeniser,
                               CommandArgumentConverterService commandArgumentConverterService,
-                              CommandLookup commandLookup, CommandExecutor commandExecutor) {
+                              CommandLookup commandLookup, CommandExecutor commandExecutor, User user) {
         this.commandNamespaceRegistry = commandNamespaceRegistry;
         this.commandArgumentTokeniser = commandArgumentTokeniser;
         this.commandArgumentConverterService = commandArgumentConverterService;
         this.commandLookup = commandLookup;
         this.commandExecutor = commandExecutor;
+        this.user = user;
     }
 
     @Override
     public ExitCode execute(String input) {
-        return null;
+        Deque<String> tokens = commandArgumentTokeniser.parseCommand(input);
+        for(String s : tokens){
+            System.out.println(s);
+        }
+        CommandExecutable commandExecutable = commandLookup.getCommand(tokens);
+        if(commandExecutable == null){
+            System.out.println("t");
+        }
+        return commandExecutor.execute(commandExecutable, tokens, user);
     }
 
     public CommandNamespaceRegistry getCommandNamespaceRegistry() {

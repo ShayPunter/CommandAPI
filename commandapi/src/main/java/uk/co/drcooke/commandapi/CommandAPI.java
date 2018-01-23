@@ -27,21 +27,21 @@ import uk.co.drcooke.commandapi.command.lookup.SimpleCommandLookupService;
 import uk.co.drcooke.commandapi.command.registry.CommandNamespaceRegistry;
 import uk.co.drcooke.commandapi.command.registry.SimpleCommandNamespaceRegistry;
 import uk.co.drcooke.commandapi.command.scanning.ReflectionCommandScanner;
-import uk.co.drcooke.commandapi.execution.ExitCode;
 import uk.co.drcooke.commandapi.execution.executor.SimpleCommandExecutor;
+import uk.co.drcooke.commandapi.security.RootUser;
 
 public class CommandAPI {
 
     public static CommandShell createSimpleCommandShell() {
         CommandNamespaceRegistry commandNamespaceRegistry = new SimpleCommandNamespaceRegistry(new ReflectionCommandScanner());
         CommandArgumentConverterService commandArgumentConverterService = new SimpleCommandArgumentConverterService(new SimpleArgumentParserLookupService(ArgumentParserLookupService.getBuiltinArgumentParsers()));
-        return new SimpleCommandShell(commandNamespaceRegistry, CommandArgumentTokeniser.lexical(), commandArgumentConverterService, new SimpleCommandLookupService(commandNamespaceRegistry), new SimpleCommandExecutor(commandArgumentConverterService));
+        return new SimpleCommandShell(commandNamespaceRegistry, CommandArgumentTokeniser.simple(), commandArgumentConverterService, new SimpleCommandLookupService(commandNamespaceRegistry), new SimpleCommandExecutor(commandArgumentConverterService), new RootUser());
     }
 
     public static void main(String[] args) {
         CommandShell commandShell = createSimpleCommandShell();
         commandShell.getCommandNamespaceRegistry().register(new TestCommand());
-        System.out.println(commandShell.execute("test 5 true").getName());
+        System.out.println(commandShell.execute("test 5").getName());
     }
 
 }

@@ -39,10 +39,8 @@ public class SimpleCommandExecutable implements CommandExecutable {
         this.commandExecutionFunction = commandExecutionFunction;
     }
 
-
-
     @Override
-    public ExitCode execute(User user, ArgumentManifest argumentManifest) {
+    public ExitCode execute(ArgumentManifest argumentManifest) {
         return commandExecutionFunction.apply(argumentManifest);
     }
 

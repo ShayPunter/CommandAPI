@@ -53,6 +53,7 @@ public enum SimpleNumberArgumentParser implements ArgumentParser<Number>{
     public Number parse(Deque<String> arguments, CommandParameter commandParameter) {
         Function<String, Number> decoder = NUMBER_PARSERS.get(commandParameter.getType());
         if(decoder != null){
+            System.out.println("pop");
             String number = arguments.pop();
             try {
                 return decoder.apply(number);

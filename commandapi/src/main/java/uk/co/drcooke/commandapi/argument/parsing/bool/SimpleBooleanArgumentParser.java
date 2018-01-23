@@ -45,13 +45,14 @@ public enum SimpleBooleanArgumentParser implements ArgumentParser<Boolean>{
         lookupTable.put("false", Boolean.FALSE);
         lookupTable.put("f", Boolean.FALSE);
         lookupTable.put("0", Boolean.FALSE);
-        lookupTable.put("diable", Boolean.FALSE);
+        lookupTable.put("disable", Boolean.FALSE);
         lookupTable.put("disabled", Boolean.FALSE);
         STRING_BOOLEAN_MAP = lookupTable;
     }
 
     @Override
     public Boolean parse(Deque<String> arguments, CommandParameter commandParameter) {
+        System.out.println("pop");
         String argument = arguments.pop();
         Boolean value = STRING_BOOLEAN_MAP.get(argument.toLowerCase());
         if(value == null){

@@ -26,8 +26,8 @@ import uk.co.drcooke.commandapi.execution.ExitCode;
 public class TestCommand {
 
     @DefaultHandler
-    public ExitCode test(@IntClamp(min=0, max=10)Integer int1, Boolean bool){
-        if(int1 == 5 && bool){
+    public ExitCode test(@IntClamp(min=0, max=10)Integer int1){
+        if(int1 == 5){
             System.out.println("It works!");
             return ExitCode.SUCCESS;
         }

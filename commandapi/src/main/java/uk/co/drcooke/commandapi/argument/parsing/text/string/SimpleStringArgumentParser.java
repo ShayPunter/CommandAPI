@@ -32,11 +32,13 @@ public enum SimpleStringArgumentParser implements ArgumentParser<String>{
             StringJoiner stringJoiner = new StringJoiner(" ");
 
             while(!arguments.isEmpty()){
+                System.out.println("pop");
                 stringJoiner.add(arguments.pop());
             }
 
             return stringJoiner.toString();
         }else{
+            System.out.println("pop");
             return arguments.pop();
         }
     }

@@ -33,9 +33,15 @@ public class SimpleCommandLookupService implements CommandLookup{
     @Override
     public CommandExecutable getCommand(Deque<String> stringDeque) {
         String namespace = stringDeque.pop();
+        if(stringDeque.peek() == null){
+            return commandNamespaceRegistry.getCommandNamespace(namespace).getDefaultCommand();
+        }
         CommandNamespace commandNamespace = commandNamespaceRegistry.getCommandNamespace(namespace);
         CommandExecutable commandExecutable = commandNamespace.getSubCommand(stringDeque.peek());
-        return commandExecutable == null ? commandNamespace.getDefaultCommand() : commandExecutable;
+        if(commandExecutable == null){
+            return commandNamespace.getDefaultCommand();
+        }
+        return commandExecutable;
     }
 
 }

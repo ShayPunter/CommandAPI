@@ -33,9 +33,15 @@ public class SimpleCommandArgumentConverterService implements CommandArgumentCon
     @Override
     public ArgumentManifest getArgumentManifest(CommandExecutable commandExecutable, Deque<String> arguments) {
         ArrayList<Object> parsedArguments = new ArrayList<>();
-        for(CommandParameter commandParameter : commandExecutable.getCommandParameters()){
-            parsedArguments.add(argumentParserLookupService
-                    .getArgumentParserForParameter(commandParameter).parse(arguments, commandParameter));
+        if(commandExecutable.getCommandParameters() != null) {
+            for (CommandParameter commandParameter : commandExecutable.getCommandParameters()) {
+                parsedArguments.add(argumentParserLookupService
+                        .getArgumentParserForParameter(commandParameter)
+                        .parse(arguments, commandParameter));
+            }
+        }
+        for(Object o : parsedArguments){
+            System.out.println(o.toString());
         }
         return new ArgumentManifest(parsedArguments);
     }
