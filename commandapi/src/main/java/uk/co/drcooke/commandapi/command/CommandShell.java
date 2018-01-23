@@ -38,6 +38,7 @@ public interface CommandShell {
     CommandExecutor getCommandExecutor();
 
     void register(Object o);
+
     void unregister(Object o);
 
 }

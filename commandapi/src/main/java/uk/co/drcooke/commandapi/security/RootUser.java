@@ -16,7 +16,7 @@
 
 package uk.co.drcooke.commandapi.security;
 
-public class RootUser implements User{
+public class RootUser implements User {
 
     @Override
     public String getName() {

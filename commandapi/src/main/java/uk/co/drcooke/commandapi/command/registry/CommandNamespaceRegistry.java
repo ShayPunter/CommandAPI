@@ -21,7 +21,9 @@ import uk.co.drcooke.commandapi.command.namespace.CommandNamespace;
 public interface CommandNamespaceRegistry {
 
     CommandNamespace getCommandNamespace(String command);
+
     void register(Object o);
+
     void unregister(Object o);
 
 }

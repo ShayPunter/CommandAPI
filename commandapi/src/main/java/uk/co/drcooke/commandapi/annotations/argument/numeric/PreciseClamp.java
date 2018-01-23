@@ -26,7 +26,9 @@ import java.lang.annotation.Target;
 public @interface PreciseClamp {
 
     String min() default "";
+
     String max() default "";
+
     ClampMethod method() default ClampMethod.LIMIT;
 
 }

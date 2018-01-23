@@ -20,5 +20,5 @@ public enum MatchType {
     EQUALITY,
     CASE_INSENSITIVE,
     PARTIAL_REGEX,
-    FULL_REGEX;
+    FULL_REGEX
 }

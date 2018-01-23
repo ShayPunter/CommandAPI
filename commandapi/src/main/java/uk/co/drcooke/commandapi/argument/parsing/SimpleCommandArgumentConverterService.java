@@ -22,18 +22,18 @@ import uk.co.drcooke.commandapi.execution.executable.CommandExecutable;
 import java.util.ArrayList;
 import java.util.Deque;
 
-public class SimpleCommandArgumentConverterService implements CommandArgumentConverterService{
+public class SimpleCommandArgumentConverterService implements CommandArgumentConverterService {
 
     private ArgumentParserLookupService argumentParserLookupService;
 
-    public SimpleCommandArgumentConverterService(ArgumentParserLookupService argumentParserLookupService){
+    public SimpleCommandArgumentConverterService(ArgumentParserLookupService argumentParserLookupService) {
         this.argumentParserLookupService = argumentParserLookupService;
     }
 
     @Override
     public ArgumentManifest getArgumentManifest(CommandExecutable commandExecutable, Deque<String> arguments) {
         ArrayList<Object> parsedArguments = new ArrayList<>();
-        if(commandExecutable.getCommandParameters() != null) {
+        if (commandExecutable.getCommandParameters() != null) {
             for (CommandParameter commandParameter : commandExecutable.getCommandParameters()) {
                 parsedArguments.add(argumentParserLookupService
                         .getArgumentParserForParameter(commandParameter)

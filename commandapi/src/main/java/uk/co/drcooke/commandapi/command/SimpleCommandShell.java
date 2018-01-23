@@ -19,19 +19,15 @@ package uk.co.drcooke.commandapi.command;
 import uk.co.drcooke.commandapi.argument.lexing.CommandArgumentTokeniser;
 import uk.co.drcooke.commandapi.argument.parsing.CommandArgumentConverterService;
 import uk.co.drcooke.commandapi.command.lookup.CommandLookup;
-import uk.co.drcooke.commandapi.command.namespace.CommandNamespace;
 import uk.co.drcooke.commandapi.command.registry.CommandNamespaceRegistry;
-import uk.co.drcooke.commandapi.execution.ArgumentManifest;
 import uk.co.drcooke.commandapi.execution.ExitCode;
 import uk.co.drcooke.commandapi.execution.executable.CommandExecutable;
 import uk.co.drcooke.commandapi.execution.executor.CommandExecutor;
 import uk.co.drcooke.commandapi.security.User;
 
-import java.util.ArrayDeque;
-import java.util.Arrays;
 import java.util.Deque;
 
-public class SimpleCommandShell implements CommandShell{
+public class SimpleCommandShell implements CommandShell {
 
     private final CommandNamespaceRegistry commandNamespaceRegistry;
     private final CommandArgumentTokeniser commandArgumentTokeniser;

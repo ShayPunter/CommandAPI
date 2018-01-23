@@ -27,40 +27,40 @@ final class LexicalCommandArgumentTokeniser implements CommandArgumentTokeniser 
         StringBuilder currentArgument = new StringBuilder();
         boolean escaped = false, quoted = false;
 
-        for(char character : command.toCharArray()){
-            if(escaped){
+        for (char character : command.toCharArray()) {
+            if (escaped) {
                 escaped = false;
                 currentArgument.append(character);
-            }else{
-                switch(character){
-                    case '\\':{
+            } else {
+                switch (character) {
+                    case '\\': {
                         escaped = true;
                         break;
                     }
-                    case '"':{
+                    case '"': {
                         quoted = !quoted;
                         break;
                     }
-                    case ' ':{
-                        if(quoted){
+                    case ' ': {
+                        if (quoted) {
                             currentArgument.append(character);
                             break;
-                        }else if(currentArgument.length() > 0){
+                        } else if (currentArgument.length() > 0) {
                             arguments.add(currentArgument.toString());
                             currentArgument.setLength(0);
                             break;
                         }
                     }
-                    default:{
+                    default: {
                         currentArgument.append(character);
                     }
                 }
             }
         }
-        if(quoted){
+        if (quoted) {
             throw new CommandTokenisingException("Unfinished quotes in value.");
         }
-        if(escaped){
+        if (escaped) {
             throw new CommandTokenisingException("Unused escape character");
         }
         return arguments;

@@ -25,5 +25,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.PARAMETER)
 public @interface Length {
     int minLength();
+
     int maxLength();
 }

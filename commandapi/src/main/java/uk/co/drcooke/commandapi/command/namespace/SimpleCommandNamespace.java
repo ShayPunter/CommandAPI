@@ -21,7 +21,7 @@ import uk.co.drcooke.commandapi.execution.executable.CommandExecutable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SimpleCommandNamespace implements CommandNamespace{
+public class SimpleCommandNamespace implements CommandNamespace {
 
     private String name;
     private String description = "";
@@ -43,12 +43,12 @@ public class SimpleCommandNamespace implements CommandNamespace{
         return description;
     }
 
-    public String getUsage() {
-        return usage;
-    }
-
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getUsage() {
+        return usage;
     }
 
     public void setUsage(String usage) {
@@ -56,7 +56,7 @@ public class SimpleCommandNamespace implements CommandNamespace{
     }
 
     @Override
-    public CommandExecutable getSubCommand(String name){
+    public CommandExecutable getSubCommand(String name) {
         return commandExecutables.get(name);
     }
 
@@ -71,17 +71,17 @@ public class SimpleCommandNamespace implements CommandNamespace{
     }
 
     @Override
-    public void addCommand(CommandExecutable commandExecutable){
+    public void addCommand(CommandExecutable commandExecutable) {
         commandExecutables.put(commandExecutable.getName(), commandExecutable);
     }
 
     @Override
-    public void removeCommand(CommandExecutable commandExecutable){
+    public void removeCommand(CommandExecutable commandExecutable) {
         removeCommand(commandExecutable.getName());
     }
 
     @Override
-    public void removeCommand(String name){
+    public void removeCommand(String name) {
         commandExecutables.remove(name);
     }
 

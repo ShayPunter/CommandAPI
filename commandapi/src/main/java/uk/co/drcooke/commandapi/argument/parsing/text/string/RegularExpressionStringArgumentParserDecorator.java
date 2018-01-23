@@ -18,18 +18,66 @@ package uk.co.drcooke.commandapi.argument.parsing.text.string;
 
 import uk.co.drcooke.commandapi.annotations.argument.validation.Match;
 import uk.co.drcooke.commandapi.argument.parsing.ArgumentParser;
-import uk.co.drcooke.commandapi.argument.parsing.IllegalInputException;
 import uk.co.drcooke.commandapi.argument.parsing.CommandParameter;
+import uk.co.drcooke.commandapi.argument.parsing.IllegalInputException;
 
 import java.util.Deque;
 import java.util.regex.Pattern;
 
-public class RegularExpressionStringArgumentParserDecorator implements ArgumentParser<String>{
+public class RegularExpressionStringArgumentParserDecorator implements ArgumentParser<String> {
 
     private ArgumentParser<String> parser;
 
     public RegularExpressionStringArgumentParserDecorator(ArgumentParser<String> parser) {
         this.parser = parser;
+    }
+
+    private static void validateIfNecessary(String argument, CommandParameter commandParameter) {
+        Match match = commandParameter.getAnnotation(Match.class);
+        if (match != null) {
+            switch (match.matchType()) {
+                case EQUALITY: {
+                    validateEquality(argument, match.match());
+                    break;
+                }
+                case CASE_INSENSITIVE: {
+                    validateEqualityIgnoreCase(argument, match.match());
+                    break;
+                }
+                case PARTIAL_REGEX: {
+                    validatePartialRegex(argument, match.match());
+                    break;
+                }
+                case FULL_REGEX: {
+                    validateFullRegex(argument, match.match());
+                    break;
+                }
+            }
+        }
+    }
+
+    private static void validateEquality(String argument, String target) {
+        if (!argument.equals(target)) {
+            throw new IllegalInputException("Input " + argument + " is not equal to " + target);
+        }
+    }
+
+    private static void validateEqualityIgnoreCase(String argument, String target) {
+        if (!argument.equalsIgnoreCase(target)) {
+            throw new IllegalInputException("Input " + argument + " is not case-insensitive equal to " + target);
+        }
+    }
+
+    private static void validatePartialRegex(String argument, String target) {
+        if (!Pattern.compile(target).matcher(argument).find()) {
+            throw new IllegalInputException("Input " + argument + " does not contain regex " + target);
+        }
+    }
+
+    private static void validateFullRegex(String argument, String target) {
+        if (!Pattern.compile(target).matcher(argument).matches()) {
+            throw new IllegalInputException("Input " + argument + " does not match regex " + target);
+        }
     }
 
     @Override
@@ -42,54 +90,6 @@ public class RegularExpressionStringArgumentParserDecorator implements ArgumentP
     @Override
     public boolean canParseParameter(CommandParameter commandParameter) {
         return parser.canParseParameter(commandParameter);
-    }
-
-    private static void validateIfNecessary(String argument, CommandParameter commandParameter){
-        Match match = commandParameter.getAnnotation(Match.class);
-        if(match != null){
-            switch(match.matchType()){
-                case EQUALITY:{
-                    validateEquality(argument, match.match());
-                    break;
-                }
-                case CASE_INSENSITIVE:{
-                    validateEqualityIgnoreCase(argument, match.match());
-                    break;
-                }
-                case PARTIAL_REGEX:{
-                    validatePartialRegex(argument, match.match());
-                    break;
-                }
-                case FULL_REGEX:{
-                    validateFullRegex(argument, match.match());
-                    break;
-                }
-            }
-        }
-    }
-
-    private static void validateEquality(String argument, String target){
-        if(!argument.equals(target)){
-            throw new IllegalInputException("Input " + argument + " is not equal to " + target);
-        }
-    }
-
-    private static void validateEqualityIgnoreCase(String argument, String target){
-        if(!argument.equalsIgnoreCase(target)){
-            throw new IllegalInputException("Input " + argument + " is not case-insensitive equal to " + target);
-        }
-    }
-
-    private static void validatePartialRegex(String argument, String target){
-        if(!Pattern.compile(target).matcher(argument).find()){
-            throw new IllegalInputException("Input " + argument + " does not contain regex " + target);
-        }
-    }
-
-    private static void validateFullRegex(String argument, String target){
-        if(!Pattern.compile(target).matcher(argument).matches()){
-            throw new IllegalInputException("Input " + argument + " does not match regex " + target);
-        }
     }
 
 }

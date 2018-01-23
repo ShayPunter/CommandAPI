@@ -24,12 +24,11 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PrimitiveWrappingNumberArgumentParserDecorator implements ArgumentParser<Number>{
+public class PrimitiveWrappingNumberArgumentParserDecorator implements ArgumentParser<Number> {
 
-    private final ArgumentParser<Number> parser;
     private static final Map<Class<?>, Class<?>> WRAPPED_CLASS_TO_PRIMITIVE_MAP;
 
-    static{
+    static {
         Map<Class<?>, Class<?>> wrappedClassToPrimitiveMap = new HashMap<>();
         wrappedClassToPrimitiveMap.put(Byte.TYPE, Byte.class);
         wrappedClassToPrimitiveMap.put(Short.TYPE, Short.class);
@@ -39,6 +38,8 @@ public class PrimitiveWrappingNumberArgumentParserDecorator implements ArgumentP
         wrappedClassToPrimitiveMap.put(Float.TYPE, Float.class);
         WRAPPED_CLASS_TO_PRIMITIVE_MAP = wrappedClassToPrimitiveMap;
     }
+
+    private final ArgumentParser<Number> parser;
 
     public PrimitiveWrappingNumberArgumentParserDecorator(ArgumentParser<Number> parser) {
         this.parser = parser;
@@ -54,7 +55,7 @@ public class PrimitiveWrappingNumberArgumentParserDecorator implements ArgumentP
         return parser.canParseParameter(wrapCommandParameter(commandParameter));
     }
 
-    private CommandParameter wrapCommandParameter(CommandParameter commandParameter){
+    private CommandParameter wrapCommandParameter(CommandParameter commandParameter) {
         return new SimpleCommandParameter(WRAPPED_CLASS_TO_PRIMITIVE_MAP.get(commandParameter.getType()),
                 commandParameter.getAnnotations());
     }

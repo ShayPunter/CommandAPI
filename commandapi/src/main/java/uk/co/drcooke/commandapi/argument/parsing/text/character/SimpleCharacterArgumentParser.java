@@ -17,18 +17,18 @@
 package uk.co.drcooke.commandapi.argument.parsing.text.character;
 
 import uk.co.drcooke.commandapi.argument.parsing.ArgumentParser;
-import uk.co.drcooke.commandapi.argument.parsing.IllegalInputException;
 import uk.co.drcooke.commandapi.argument.parsing.CommandParameter;
+import uk.co.drcooke.commandapi.argument.parsing.IllegalInputException;
 
 import java.util.Deque;
 
-public enum SimpleCharacterArgumentParser implements ArgumentParser<Character>{
+public enum SimpleCharacterArgumentParser implements ArgumentParser<Character> {
     INSTANCE;
 
     @Override
     public Character parse(Deque<String> arguments, CommandParameter commandParameter) {
         String argument = arguments.pop();
-        if(argument.length() != 1){
+        if (argument.length() != 1) {
             throw new IllegalInputException("Argument is not a character.");
         }
         return argument.charAt(0);

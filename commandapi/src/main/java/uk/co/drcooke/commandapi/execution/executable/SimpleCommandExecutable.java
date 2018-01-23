@@ -19,7 +19,6 @@ package uk.co.drcooke.commandapi.execution.executable;
 import uk.co.drcooke.commandapi.argument.parsing.CommandParameter;
 import uk.co.drcooke.commandapi.execution.ArgumentManifest;
 import uk.co.drcooke.commandapi.execution.ExitCode;
-import uk.co.drcooke.commandapi.security.User;
 
 import java.util.List;
 import java.util.function.Function;
@@ -27,10 +26,10 @@ import java.util.function.Function;
 public class SimpleCommandExecutable implements CommandExecutable {
 
     private final String name;
-    private String usage;
-    private String description;
     private final List<CommandParameter> commandParameters;
     private final Function<ArgumentManifest, ExitCode> commandExecutionFunction;
+    private String usage;
+    private String description;
 
     public SimpleCommandExecutable(String name, List<CommandParameter> commandParameters,
                                    Function<ArgumentManifest, ExitCode> commandExecutionFunction) {
@@ -55,13 +54,13 @@ public class SimpleCommandExecutable implements CommandExecutable {
     }
 
     @Override
-    public String getDescription() {
-        return description;
+    public void setUsage(String usage) {
+        this.usage = usage;
     }
 
     @Override
-    public void setUsage(String usage) {
-        this.usage = usage;
+    public String getDescription() {
+        return description;
     }
 
     @Override

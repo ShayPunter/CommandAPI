@@ -26,15 +26,15 @@ import uk.co.drcooke.commandapi.execution.ExitCode;
 public class TestCommand {
 
     @DefaultHandler
-    public ExitCode test(@IntClamp(min=0, max=10)int int1, boolean bool, char c){
-        if(int1 == 5){
+    public ExitCode test(@IntClamp(min = 0, max = 10) int int1, boolean bool, char c) {
+        if (int1 == 5) {
             return ExitCode.SUCCESS;
         }
         return ExitCode.FAILURE;
     }
 
     @Subcommand("test")
-    public ExitCode test(){
+    public ExitCode test() {
         return ExitCode.SUCCESS;
     }
 

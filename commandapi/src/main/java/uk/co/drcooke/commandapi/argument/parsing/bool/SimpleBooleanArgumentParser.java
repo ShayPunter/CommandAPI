@@ -17,19 +17,19 @@
 package uk.co.drcooke.commandapi.argument.parsing.bool;
 
 import uk.co.drcooke.commandapi.argument.parsing.ArgumentParser;
-import uk.co.drcooke.commandapi.argument.parsing.IllegalInputException;
 import uk.co.drcooke.commandapi.argument.parsing.CommandParameter;
+import uk.co.drcooke.commandapi.argument.parsing.IllegalInputException;
 
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum SimpleBooleanArgumentParser implements ArgumentParser<Boolean>{
+public enum SimpleBooleanArgumentParser implements ArgumentParser<Boolean> {
     INSTANCE;
 
     private static final Map<String, Boolean> STRING_BOOLEAN_MAP;
 
-    static{
+    static {
         Map<String, Boolean> lookupTable = new HashMap<>();
         lookupTable.put("yes", Boolean.TRUE);
         lookupTable.put("y", Boolean.TRUE);
@@ -54,7 +54,7 @@ public enum SimpleBooleanArgumentParser implements ArgumentParser<Boolean>{
     public Boolean parse(Deque<String> arguments, CommandParameter commandParameter) {
         String argument = arguments.pop();
         Boolean value = STRING_BOOLEAN_MAP.get(argument.toLowerCase());
-        if(value == null){
+        if (value == null) {
             throw new IllegalInputException(argument + "is not a boolean.");
         }
         return value;

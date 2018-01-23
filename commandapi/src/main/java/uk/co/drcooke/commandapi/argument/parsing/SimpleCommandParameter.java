@@ -41,9 +41,9 @@ public class SimpleCommandParameter implements CommandParameter {
     @Override
     @SuppressWarnings("unchecked")
     public <T extends Annotation> T getAnnotation(Class<T> annotationType) {
-        for(Annotation annotation : annotations){
-            if(annotation.annotationType() == annotationType){
-                return (T)annotation;
+        for (Annotation annotation : annotations) {
+            if (annotation.annotationType() == annotationType) {
+                return (T) annotation;
             }
         }
         return null;

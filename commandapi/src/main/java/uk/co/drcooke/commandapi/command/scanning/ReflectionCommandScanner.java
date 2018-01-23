@@ -32,64 +32,64 @@ import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReflectionCommandScanner implements CommandScanner{
+public class ReflectionCommandScanner implements CommandScanner {
 
     @Override
     public CommandNamespace getCommands(Object object) {
         Class clazz = object.getClass();
-        if(!clazz.isAnnotationPresent(Command.class)){
+        if (!clazz.isAnnotationPresent(Command.class)) {
             return null;
         }
         CommandNamespace commandNamespace = getEmptyCommandNamespace(clazz);
-        for(Method method : clazz.getDeclaredMethods()){
+        for (Method method : clazz.getDeclaredMethods()) {
             processMethod(method, commandNamespace, object);
         }
         return commandNamespace;
     }
 
-    private CommandNamespace getEmptyCommandNamespace(Class clazz){
-        Command commandAnnotation = (Command)clazz.getAnnotation(Command.class);
+    private CommandNamespace getEmptyCommandNamespace(Class clazz) {
+        Command commandAnnotation = (Command) clazz.getAnnotation(Command.class);
         String name = commandAnnotation.value();
         SimpleCommandNamespace commandNamespace = new SimpleCommandNamespace(name);
-        Usage usage = (Usage)clazz.getAnnotation(Usage.class);
-        if(usage != null){
+        Usage usage = (Usage) clazz.getAnnotation(Usage.class);
+        if (usage != null) {
             commandNamespace.setUsage(usage.usage());
         }
-        Description description = (Description)clazz.getAnnotation(Description.class);
-        if(description != null){
+        Description description = (Description) clazz.getAnnotation(Description.class);
+        if (description != null) {
             commandNamespace.setDescription(description.description());
         }
         return commandNamespace;
     }
 
-    private void processMethod(Method method, CommandNamespace commandNamespace, Object parent){
-        if(method.isAnnotationPresent(DefaultHandler.class)){
+    private void processMethod(Method method, CommandNamespace commandNamespace, Object parent) {
+        if (method.isAnnotationPresent(DefaultHandler.class)) {
             List<CommandParameter> commandParameters = new ArrayList<>();
-            for(Parameter parameter : method.getParameters()){
+            for (Parameter parameter : method.getParameters()) {
                 Class<?> type = parameter.getType();
                 Annotation[] annotations = parameter.getAnnotations();
                 commandParameters.add(new SimpleCommandParameter(type, annotations));
             }
             CommandExecutable commandExecutable = new SimpleCommandExecutable("", commandParameters, argumentManifest -> {
                 try {
-                    return (ExitCode)method.invoke(parent, argumentManifest.getArguments().toArray());
+                    return (ExitCode) method.invoke(parent, argumentManifest.getArguments().toArray());
                 } catch (IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
                 }
                 return ExitCode.FAILURE;
             });
             commandNamespace.setDefaultCommand(commandExecutable);
-        }else if(method.isAnnotationPresent(Subcommand.class)){
+        } else if (method.isAnnotationPresent(Subcommand.class)) {
             Subcommand subcommand = method.getAnnotation(Subcommand.class);
             List<CommandParameter> commandParameters = new ArrayList<>();
-            for(Parameter parameter : method.getParameters()){
+            for (Parameter parameter : method.getParameters()) {
                 Class<?> type = parameter.getType();
                 Annotation[] annotations = parameter.getAnnotations();
                 commandParameters.add(new SimpleCommandParameter(type, annotations));
             }
             CommandExecutable commandExecutable = new SimpleCommandExecutable(subcommand.value(), commandParameters, argumentManifest -> {
                 try {
-                    return (ExitCode)method.invoke(parent, argumentManifest.getArguments().toArray());
+                    return (ExitCode) method.invoke(parent, argumentManifest.getArguments().toArray());
                 } catch (IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
                 }

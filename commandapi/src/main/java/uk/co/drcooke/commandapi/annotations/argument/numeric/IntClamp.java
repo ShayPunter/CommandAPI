@@ -26,7 +26,9 @@ import java.lang.annotation.Target;
 public @interface IntClamp {
 
     long min() default Long.MIN_VALUE;
+
     long max() default Long.MAX_VALUE;
+
     ClampMethod method() default ClampMethod.LIMIT;
 
 }

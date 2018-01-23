@@ -18,12 +18,12 @@ package uk.co.drcooke.commandapi.argument.parsing.text.string;
 
 import uk.co.drcooke.commandapi.annotations.argument.validation.Length;
 import uk.co.drcooke.commandapi.argument.parsing.ArgumentParser;
-import uk.co.drcooke.commandapi.argument.parsing.IllegalInputException;
 import uk.co.drcooke.commandapi.argument.parsing.CommandParameter;
+import uk.co.drcooke.commandapi.argument.parsing.IllegalInputException;
 
 import java.util.Deque;
 
-public class LengthLimitingStringArgumentParserDecorator implements ArgumentParser<String>{
+public class LengthLimitingStringArgumentParserDecorator implements ArgumentParser<String> {
 
     private ArgumentParser<String> parser;
 
@@ -43,16 +43,16 @@ public class LengthLimitingStringArgumentParserDecorator implements ArgumentPars
         return parser.canParseParameter(commandParameter);
     }
 
-    public void validateIfNecessary(String argument, CommandParameter commandParameter){
+    public void validateIfNecessary(String argument, CommandParameter commandParameter) {
         Length length = commandParameter.getAnnotation(Length.class);
-        if(length != null){
+        if (length != null) {
             int minLength = length.minLength();
             int maxLength = length.maxLength();
             int actualLength = argument.length();
-            if(actualLength < minLength){
+            if (actualLength < minLength) {
                 throw new IllegalInputException("Argument " + argument + " is too short");
             }
-            if(actualLength > maxLength){
+            if (actualLength > maxLength) {
                 throw new IllegalInputException("Argument " + argument + " is too long");
             }
         }

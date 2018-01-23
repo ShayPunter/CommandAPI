@@ -22,7 +22,7 @@ import uk.co.drcooke.commandapi.argument.parsing.SimpleCommandParameter;
 
 import java.util.Deque;
 
-public class PrimitiveWrappingBooleanArgumentParserDecorator implements ArgumentParser<Boolean>{
+public class PrimitiveWrappingBooleanArgumentParserDecorator implements ArgumentParser<Boolean> {
 
     private final ArgumentParser<Boolean> parser;
 
@@ -40,7 +40,7 @@ public class PrimitiveWrappingBooleanArgumentParserDecorator implements Argument
         return parser.canParseParameter(wrapCommandParameter(commandParameter));
     }
 
-    private CommandParameter wrapCommandParameter(CommandParameter commandParameter){
+    private CommandParameter wrapCommandParameter(CommandParameter commandParameter) {
         return new SimpleCommandParameter(commandParameter.getType() == Boolean.TYPE
                 ? Boolean.class : commandParameter.getType(), commandParameter.getAnnotations());
     }

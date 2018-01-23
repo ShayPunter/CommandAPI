@@ -23,20 +23,20 @@ import uk.co.drcooke.commandapi.argument.parsing.CommandParameter;
 import java.util.Deque;
 import java.util.StringJoiner;
 
-public enum SimpleStringArgumentParser implements ArgumentParser<String>{
+public enum SimpleStringArgumentParser implements ArgumentParser<String> {
     INSTANCE;
 
     @Override
     public String parse(Deque<String> arguments, CommandParameter commandParameter) {
-        if(commandParameter.isAnnotationPresent(Exhaustive.class)){
+        if (commandParameter.isAnnotationPresent(Exhaustive.class)) {
             StringJoiner stringJoiner = new StringJoiner(" ");
 
-            while(!arguments.isEmpty()){
+            while (!arguments.isEmpty()) {
                 stringJoiner.add(arguments.pop());
             }
 
             return stringJoiner.toString();
-        }else{
+        } else {
             return arguments.pop();
         }
     }

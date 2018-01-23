@@ -16,17 +16,17 @@
 
 package uk.co.drcooke.commandapi.argument.parsing;
 
-public class IllegalInputException extends RuntimeException{
+public class IllegalInputException extends RuntimeException {
 
-    public IllegalInputException(String message){
+    public IllegalInputException(String message) {
         super(message);
     }
 
-    public IllegalInputException(Throwable cause){
+    public IllegalInputException(Throwable cause) {
         super(cause);
     }
 
-    public IllegalInputException(String message, Throwable cause){
+    public IllegalInputException(String message, Throwable cause) {
         super(message, cause);
     }
 

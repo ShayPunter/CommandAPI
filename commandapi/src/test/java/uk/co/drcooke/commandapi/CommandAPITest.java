@@ -19,12 +19,10 @@ package uk.co.drcooke.commandapi;
 import org.junit.jupiter.api.Test;
 import uk.co.drcooke.commandapi.command.CommandShell;
 
-import java.lang.annotation.Target;
-
 public class CommandAPITest {
 
     @Test
-    public void testCommandAPI(){
+    public void testCommandAPI() {
         CommandShell commandShell = CommandAPI.createSimpleCommandShell();
         commandShell.register(new TestCommand());
         commandShell.execute("test 5 true c");

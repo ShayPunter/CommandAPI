@@ -16,17 +16,17 @@
 
 package uk.co.drcooke.commandapi.argument.parsing;
 
-public class CannotParseArgumentException extends RuntimeException{
+public class CannotParseArgumentException extends RuntimeException {
 
-    public CannotParseArgumentException(String message){
+    public CannotParseArgumentException(String message) {
         super(message);
     }
 
-    public CannotParseArgumentException(Throwable cause){
+    public CannotParseArgumentException(Throwable cause) {
         super(cause);
     }
 
-    public CannotParseArgumentException(String message, Throwable cause){
+    public CannotParseArgumentException(String message, Throwable cause) {
         super(message, cause);
     }
 

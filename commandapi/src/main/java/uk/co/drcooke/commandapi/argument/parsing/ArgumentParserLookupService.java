@@ -30,30 +30,28 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public interface ArgumentParserLookupService {
-    <T> ArgumentParser<T> getArgumentParserForParameter(CommandParameter commandParameter) throws CannotParseArgumentException;
-
-    static Collection<ArgumentParser<?>> getBuiltinArgumentParsers(){
+    static Collection<ArgumentParser<?>> getBuiltinArgumentParsers() {
         ArrayList<ArgumentParser<?>> argumentParsers = new ArrayList<>();
         argumentParsers.add(new PrimitiveWrappingBooleanArgumentParserDecorator(
                 SimpleBooleanArgumentParser.INSTANCE
         ));
 
         argumentParsers.add(new PrimitiveWrappingNumberArgumentParserDecorator(
-                new DecimalValueClampingNumberArgumentParserDecorator(
-                    new IntegerValueNumberArgumentParserDecorator(
-                            new PreciseValueClampingNumberArgumentParserDecorator(
-                                    SimpleNumberArgumentParser.INSTANCE
-                            )
-                    )
+                        new DecimalValueClampingNumberArgumentParserDecorator(
+                                new IntegerValueNumberArgumentParserDecorator(
+                                        new PreciseValueClampingNumberArgumentParserDecorator(
+                                                SimpleNumberArgumentParser.INSTANCE
+                                        )
+                                )
+                        )
                 )
-            )
         );
 
         argumentParsers.add(new PrimitiveWrappingCharacterArgumentParserDecorator(
-                new RegularExpressionCharacterArgumentParserDecorator(
-                    SimpleCharacterArgumentParser.INSTANCE
+                        new RegularExpressionCharacterArgumentParserDecorator(
+                                SimpleCharacterArgumentParser.INSTANCE
+                        )
                 )
-            )
         );
 
         argumentParsers.add(new LengthLimitingStringArgumentParserDecorator(
@@ -64,5 +62,7 @@ public interface ArgumentParserLookupService {
 
         return argumentParsers;
     }
+
+    <T> ArgumentParser<T> getArgumentParserForParameter(CommandParameter commandParameter) throws CannotParseArgumentException;
 
 }

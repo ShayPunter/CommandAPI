@@ -26,7 +26,9 @@ import java.lang.annotation.Target;
 public @interface DecimalClamp {
 
     double min() default Double.MIN_VALUE;
+
     double max() default Double.MAX_VALUE;
+
     ClampMethod method() default ClampMethod.LIMIT;
 
 }

@@ -18,16 +18,20 @@ package uk.co.drcooke.commandapi.command.namespace;
 
 import uk.co.drcooke.commandapi.execution.executable.CommandExecutable;
 
-import java.util.List;
-
 public interface CommandNamespace {
 
     String getName();
+
     CommandExecutable getSubCommand(String name);
+
     CommandExecutable getDefaultCommand();
+
     void setDefaultCommand(CommandExecutable commandExecutable);
+
     void addCommand(CommandExecutable commandExecutable);
+
     void removeCommand(CommandExecutable commandExecutable);
+
     void removeCommand(String name);
 
 }

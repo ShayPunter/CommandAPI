@@ -28,7 +28,7 @@ public class SimpleCommandExecutor implements CommandExecutor {
 
     private CommandArgumentConverterService commandArgumentConverterService;
 
-    public SimpleCommandExecutor(CommandArgumentConverterService commandArgumentConverterService){
+    public SimpleCommandExecutor(CommandArgumentConverterService commandArgumentConverterService) {
         this.commandArgumentConverterService = commandArgumentConverterService;
 
     }

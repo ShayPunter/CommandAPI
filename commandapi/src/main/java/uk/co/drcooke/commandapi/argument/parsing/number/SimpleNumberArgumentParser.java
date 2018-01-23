@@ -28,14 +28,14 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
-public enum SimpleNumberArgumentParser implements ArgumentParser<Number>{
+public enum SimpleNumberArgumentParser implements ArgumentParser<Number> {
     INSTANCE;
 
     private static final Predicate<String> OCTAL_PREDICATE;
     private static final Predicate<String> HEX_PREDICATE;
     private static final Map<Class<?>, Function<String, Number>> NUMBER_PARSERS;
 
-    static{
+    static {
         OCTAL_PREDICATE = Pattern.compile("^([-+])?(0x|0X|#)[a-fA-F0-9]+$").asPredicate();
         HEX_PREDICATE = Pattern.compile("^([-+])?0[1-7]*$").asPredicate();
         NUMBER_PARSERS = new HashMap<>();
@@ -47,26 +47,6 @@ public enum SimpleNumberArgumentParser implements ArgumentParser<Number>{
         NUMBER_PARSERS.put(Float.class, SimpleNumberArgumentParser::decodeFloat);
         NUMBER_PARSERS.put(BigInteger.class, SimpleNumberArgumentParser::decodeBigInteger);
         NUMBER_PARSERS.put(BigDecimal.class, SimpleNumberArgumentParser::decodeBigDecimal);
-    }
-
-    @Override
-    public Number parse(Deque<String> arguments, CommandParameter commandParameter) {
-        Function<String, Number> decoder = NUMBER_PARSERS.get(commandParameter.getType());
-        if(decoder != null){
-            String number = arguments.pop();
-            try {
-                return decoder.apply(number);
-            }catch(NumberFormatException exception){
-                throw new IllegalArgumentException("Number is in bad format.", exception);
-            }
-        }else {
-            throw new IllegalArgumentException("Cannot parse a number of type: " + commandParameter.getType().getCanonicalName());
-        }
-    }
-
-    @Override
-    public boolean canParseParameter(CommandParameter commandParameter) {
-        return NUMBER_PARSERS.containsKey(commandParameter.getType());
     }
 
     public static Double decodeDouble(String input) throws NumberFormatException {
@@ -95,6 +75,26 @@ public enum SimpleNumberArgumentParser implements ArgumentParser<Number>{
                 : OCTAL_PREDICATE.test(input)
                 ? new BigDecimal(new BigInteger(input, 8))
                 : new BigDecimal(input);
+    }
+
+    @Override
+    public Number parse(Deque<String> arguments, CommandParameter commandParameter) {
+        Function<String, Number> decoder = NUMBER_PARSERS.get(commandParameter.getType());
+        if (decoder != null) {
+            String number = arguments.pop();
+            try {
+                return decoder.apply(number);
+            } catch (NumberFormatException exception) {
+                throw new IllegalArgumentException("Number is in bad format.", exception);
+            }
+        } else {
+            throw new IllegalArgumentException("Cannot parse a number of type: " + commandParameter.getType().getCanonicalName());
+        }
+    }
+
+    @Override
+    public boolean canParseParameter(CommandParameter commandParameter) {
+        return NUMBER_PARSERS.containsKey(commandParameter.getType());
     }
 
 }

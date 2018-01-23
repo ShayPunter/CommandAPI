@@ -18,11 +18,11 @@ package uk.co.drcooke.commandapi.argument.parsing;
 
 import java.util.Collection;
 
-public class SimpleArgumentParserLookupService implements ArgumentParserLookupService{
+public class SimpleArgumentParserLookupService implements ArgumentParserLookupService {
 
     private Collection<ArgumentParser<?>> argumentParsers;
 
-    public SimpleArgumentParserLookupService(Collection<ArgumentParser<?>> argumentParsers){
+    public SimpleArgumentParserLookupService(Collection<ArgumentParser<?>> argumentParsers) {
         this.argumentParsers = argumentParsers;
     }
 

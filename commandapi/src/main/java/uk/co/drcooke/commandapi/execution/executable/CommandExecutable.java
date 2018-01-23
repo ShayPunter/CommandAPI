@@ -26,13 +26,20 @@ import java.util.List;
 public interface CommandExecutable {
 
     ExitCode execute(ArgumentManifest argumentManifest);
+
     String getName();
+
     String getUsage();
-    String getDescription();
+
     void setUsage(String usage);
+
+    String getDescription();
+
     void setDescription(String description);
+
     List<CommandParameter> getCommandParameters();
-    default boolean canExecute(User user){
+
+    default boolean canExecute(User user) {
         return true;
     }
 

@@ -16,17 +16,17 @@
 
 package uk.co.drcooke.commandapi.argument.lexing;
 
-public class CommandTokenisingException extends RuntimeException{
+public class CommandTokenisingException extends RuntimeException {
 
-    public CommandTokenisingException(String message){
+    public CommandTokenisingException(String message) {
         super(message);
     }
 
-    public CommandTokenisingException(Throwable cause){
+    public CommandTokenisingException(Throwable cause) {
         super(cause);
     }
 
-    public CommandTokenisingException(String message, Throwable cause){
+    public CommandTokenisingException(String message, Throwable cause) {
         super(message, cause);
     }
 

@@ -20,14 +20,14 @@ import java.util.Deque;
 
 public interface CommandArgumentTokeniser {
 
-    Deque<String> parseCommand(String command);
-
-    static CommandArgumentTokeniser simple(){
+    static CommandArgumentTokeniser simple() {
         return new SimpleCommandArgumentTokeniser();
     }
 
-    static CommandArgumentTokeniser lexical(){
+    static CommandArgumentTokeniser lexical() {
         return new LexicalCommandArgumentTokeniser();
     }
+
+    Deque<String> parseCommand(String command);
 
 }

@@ -16,17 +16,17 @@
 
 package uk.co.drcooke.commandapi.argument.parsing.number;
 
-public class ArgumentOutOfBoundsException extends RuntimeException{
+public class ArgumentOutOfBoundsException extends RuntimeException {
 
-    public ArgumentOutOfBoundsException(String message){
+    public ArgumentOutOfBoundsException(String message) {
         super(message);
     }
 
-    public ArgumentOutOfBoundsException(Throwable cause){
+    public ArgumentOutOfBoundsException(Throwable cause) {
         super(cause);
     }
 
-    public ArgumentOutOfBoundsException(String message, Throwable cause){
+    public ArgumentOutOfBoundsException(String message, Throwable cause) {
         super(message, cause);
     }
 

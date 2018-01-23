@@ -40,7 +40,7 @@ public class PrimitiveWrappingCharacterArgumentParserDecorator implements Argume
         return parser.canParseParameter(wrapCommandParameter(commandParameter));
     }
 
-    private CommandParameter wrapCommandParameter(CommandParameter commandParameter){
+    private CommandParameter wrapCommandParameter(CommandParameter commandParameter) {
         return new SimpleCommandParameter(commandParameter.getType() == Character.TYPE ?
                 Character.class : commandParameter.getType(), commandParameter.getAnnotations());
     }
