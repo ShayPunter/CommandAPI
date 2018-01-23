@@ -48,12 +48,12 @@ public class IntegerValueNumberArgumentParserDecorator implements ArgumentParser
         validators.put(BigDecimal.class, intClamp -> number -> ensureNumberInBounds(BigDecimal.valueOf(number.doubleValue()), BigDecimal.valueOf(intClamp.min()), BigDecimal.valueOf(intClamp.max())));
         INTEGER_CLAMP_VALIDATION_FUNCTIONS = validators;
         Map<Class<? extends Number>, Function<IntClamp, UnaryOperator<Number>>> limiters = new HashMap<>();
-        limiters.put(Byte.class, intClamp -> number -> Math.max(intClamp.min(), Math.min(intClamp.max(), (byte)number)));
-        limiters.put(Short.class, intClamp -> number -> Math.max(intClamp.min(), Math.min(intClamp.max(), (short)number)));
-        limiters.put(Integer.class, intClamp -> number -> Math.max(intClamp.min(), Math.min(intClamp.max(), (int)number)));
-        limiters.put(Long.class, intClamp -> number -> Math.max(intClamp.min(), Math.min(intClamp.max(), (long)number)));
-        limiters.put(Double.class, intClamp -> number -> Math.max(intClamp.min(), Math.min(intClamp.max(), (double)number)));
-        limiters.put(Float.class, intClamp -> number -> Math.max(intClamp.min(), Math.min(intClamp.max(), (float)number)));
+        limiters.put(Byte.class, intClamp -> number -> (byte)Math.max(intClamp.min(), Math.min(intClamp.max(), (byte)number)));
+        limiters.put(Short.class, intClamp -> number -> (short)Math.max(intClamp.min(), Math.min(intClamp.max(), (short)number)));
+        limiters.put(Integer.class, intClamp -> number -> (int)Math.max(intClamp.min(), Math.min(intClamp.max(), (int)number)));
+        limiters.put(Long.class, intClamp -> number -> (long)Math.max(intClamp.min(), Math.min(intClamp.max(), (long)number)));
+        limiters.put(Double.class, intClamp -> number -> (double)Math.max(intClamp.min(), Math.min(intClamp.max(), (double)number)));
+        limiters.put(Float.class, intClamp -> number -> (float)Math.max(intClamp.min(), Math.min(intClamp.max(), (float)number)));
         limiters.put(BigInteger.class, intClamp -> number -> BigInteger.valueOf(number.longValue()).max(BigInteger.valueOf(intClamp.min())).min(BigInteger.valueOf(intClamp.max())));
         limiters.put(BigDecimal.class, intClamp -> number -> BigDecimal.valueOf(number.doubleValue()).max(BigDecimal.valueOf(intClamp.min()).min(BigDecimal.valueOf(intClamp.max()))));
         INTEGER_CLAMP_LIMITING_FUNCTIONS = limiters;
@@ -84,7 +84,9 @@ public class IntegerValueNumberArgumentParserDecorator implements ArgumentParser
 
     public static Number clampIfNecessary(Number number, CommandParameter commandParameter){
         if(commandParameter.isAnnotationPresent(IntClamp.class)){
-            return clamp(number, commandParameter.getAnnotation(IntClamp.class));
+            Number n = clamp(number, commandParameter.getAnnotation(IntClamp.class));
+            System.out.println(n.getClass().getCanonicalName());
+            return n;
         }else{
             return number;
         }

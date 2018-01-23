@@ -72,6 +72,7 @@ public class ReflectionCommandScanner implements CommandScanner{
             }
             CommandExecutable commandExecutable = new SimpleCommandExecutable("", commandParameters, argumentManifest -> {
                 try {
+                    System.out.println(argumentManifest.getArguments().get(0).getClass().getCanonicalName());
                     return (ExitCode)method.invoke(parent, argumentManifest.getArguments().toArray());
                 } catch (IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();

@@ -54,12 +54,12 @@ public class DecimalValueClampingNumberArgumentParserDecorator implements Argume
         validators.put(BigDecimal.class, decimalClamp -> number -> ensureNumberInBounds((BigDecimal)number, BigDecimal.valueOf(decimalClamp.min()), BigDecimal.valueOf(decimalClamp.max())));
         DECIMAL_CLAMP_VALIDATION_FUNCTIONS = Collections.unmodifiableMap(validators);
         Map<Class<? extends Number>, Function<DecimalClamp, UnaryOperator<Number>>> limiters = new HashMap<>();
-        limiters.put(Byte.class, decimalClamp -> number -> Math.max(Math.min(number.byteValue(), decimalClamp.max()), decimalClamp.min()));
-        limiters.put(Short.class, decimalClamp -> number -> Math.max(Math.min(number.shortValue(), decimalClamp.max()), decimalClamp.min()));
-        limiters.put(Integer.class, decimalClamp -> number -> Math.max(Math.min(number.intValue(), decimalClamp.max()), decimalClamp.min()));
-        limiters.put(Long.class, decimalClamp -> number -> Math.max(Math.min(number.longValue(), decimalClamp.max()), decimalClamp.min()));
-        limiters.put(Float.class, decimalClamp -> number -> Math.max(Math.min(number.floatValue(), decimalClamp.max()), decimalClamp.min()));
-        limiters.put(Double.class, decimalClamp -> number -> Math.max(Math.min(number.doubleValue(), decimalClamp.max()), decimalClamp.min()));
+        limiters.put(Byte.class, decimalClamp -> number -> (byte)Math.max(Math.min(number.byteValue(), decimalClamp.max()), decimalClamp.min()));
+        limiters.put(Short.class, decimalClamp -> number -> (short)Math.max(Math.min(number.shortValue(), decimalClamp.max()), decimalClamp.min()));
+        limiters.put(Integer.class, decimalClamp -> number -> (int)Math.max(Math.min(number.intValue(), decimalClamp.max()), decimalClamp.min()));
+        limiters.put(Long.class, decimalClamp -> number -> (long)Math.max(Math.min(number.longValue(), decimalClamp.max()), decimalClamp.min()));
+        limiters.put(Float.class, decimalClamp -> number -> (float)Math.max(Math.min(number.floatValue(), decimalClamp.max()), decimalClamp.min()));
+        limiters.put(Double.class, decimalClamp -> number -> (double)Math.max(Math.min(number.doubleValue(), decimalClamp.max()), decimalClamp.min()));
         limiters.put(BigInteger.class, decimalClamp -> number -> ((BigInteger) number).min(BigInteger.valueOf((long) decimalClamp.max())).max(BigInteger.valueOf((long) decimalClamp.min())));
         limiters.put(BigDecimal.class, decimalClamp -> number -> ((BigDecimal) number).min(BigDecimal.valueOf(decimalClamp.max())).max(BigDecimal.valueOf(decimalClamp.min())));
         DECIMAL_CLAMP_LIMITING_FUNCTIONS = Collections.unmodifiableMap(limiters);
