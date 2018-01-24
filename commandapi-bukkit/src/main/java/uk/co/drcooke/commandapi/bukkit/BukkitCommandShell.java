@@ -21,6 +21,7 @@ import uk.co.drcooke.commandapi.argument.parsing.ArgumentParserLookupService;
 import uk.co.drcooke.commandapi.argument.parsing.CommandArgumentConverterService;
 import uk.co.drcooke.commandapi.argument.parsing.SimpleArgumentParserLookupService;
 import uk.co.drcooke.commandapi.argument.parsing.SimpleCommandArgumentConverterService;
+import uk.co.drcooke.commandapi.bukkit.security.CommandSenderTypeCheckingCommandExcecutorDecorator;
 import uk.co.drcooke.commandapi.bukkit.security.PermissionCheckingCommandExecutorDecorator;
 import uk.co.drcooke.commandapi.command.CommandShell;
 import uk.co.drcooke.commandapi.command.SimpleCommandShell;
@@ -99,7 +100,9 @@ public class BukkitCommandShell implements CommandShell {
                 new SimpleArgumentParserLookupService(ArgumentParserLookupService.getBuiltinArgumentParsers()));
         return new SimpleCommandShell(commandNamespaceRegistry, CommandArgumentTokeniser.simple(),
                 commandArgumentConverterService, new SimpleCommandLookupService(commandNamespaceRegistry),
-                new PermissionCheckingCommandExecutorDecorator(new SimpleCommandExecutor(commandArgumentConverterService)));
+                new CommandSenderTypeCheckingCommandExcecutorDecorator(
+                        new PermissionCheckingCommandExecutorDecorator(
+                                new SimpleCommandExecutor(commandArgumentConverterService))));
     }
 
 }

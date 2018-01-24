@@ -82,7 +82,7 @@ public class ReflectionCommandScanner implements CommandScanner {
                     e.printStackTrace();
                 }
                 return ExitCode.FAILURE;
-            }, permission);
+            }, permission, method.getDeclaredAnnotations());
             commandNamespace.setDefaultCommand(commandExecutable);
         } else if (method.isAnnotationPresent(Subcommand.class)) {
             Subcommand subcommand = method.getAnnotation(Subcommand.class);
@@ -103,7 +103,7 @@ public class ReflectionCommandScanner implements CommandScanner {
                     e.printStackTrace();
                 }
                 return ExitCode.FAILURE;
-            }, permission);
+            }, permission, method.getDeclaredAnnotations());
             commandNamespace.addCommand(commandExecutable);
         }
     }

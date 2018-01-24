@@ -21,6 +21,7 @@ import uk.co.drcooke.commandapi.execution.ArgumentManifest;
 import uk.co.drcooke.commandapi.execution.ExitCode;
 import uk.co.drcooke.commandapi.security.User;
 
+import java.lang.annotation.Annotation;
 import java.util.List;
 
 public interface CommandExecutable {
@@ -38,6 +39,10 @@ public interface CommandExecutable {
     void setDescription(String description);
 
     List<CommandParameter> getCommandParameters();
+
+    Annotation[] getAnnotations();
+
+    boolean isAnnotationPresent(Class<? extends Annotation> annotation);
 
     default boolean canExecute(User user) {
         return true;

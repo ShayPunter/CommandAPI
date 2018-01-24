@@ -18,6 +18,7 @@ package uk.co.drcooke.commandapi;
 
 import org.junit.jupiter.api.Test;
 import uk.co.drcooke.commandapi.command.CommandShell;
+import uk.co.drcooke.commandapi.security.RootUser;
 
 public class CommandAPITest {
 
@@ -25,7 +26,7 @@ public class CommandAPITest {
     public void testCommandAPI() {
         CommandShell commandShell = CommandAPI.createSimpleCommandShell();
         commandShell.register(new TestCommand());
-        commandShell.execute("test 5 true c");
+        System.out.println(commandShell.execute("test 5 true c", new RootUser()).getName());
     }
 
 }

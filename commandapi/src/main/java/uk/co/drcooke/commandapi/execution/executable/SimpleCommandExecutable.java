@@ -21,6 +21,7 @@ import uk.co.drcooke.commandapi.execution.ArgumentManifest;
 import uk.co.drcooke.commandapi.execution.ExitCode;
 import uk.co.drcooke.commandapi.security.User;
 
+import java.lang.annotation.Annotation;
 import java.util.List;
 import java.util.function.Function;
 
@@ -31,15 +32,17 @@ public class SimpleCommandExecutable implements CommandExecutable {
     private final Function<ArgumentManifest, ExitCode> commandExecutionFunction;
     private String usage;
     private String description;
-    private String permission;
+    private final String permission;
+    private final Annotation[] annotations;
 
     public SimpleCommandExecutable(String name, List<CommandParameter> commandParameters,
                                    Function<ArgumentManifest, ExitCode> commandExecutionFunction,
-                                   String permission) {
+                                   String permission, Annotation[] annotations) {
         this.name = name;
         this.commandParameters = commandParameters;
         this.commandExecutionFunction = commandExecutionFunction;
         this.permission = permission;
+        this.annotations = annotations;
     }
 
     @Override
@@ -75,6 +78,21 @@ public class SimpleCommandExecutable implements CommandExecutable {
     @Override
     public List<CommandParameter> getCommandParameters() {
         return commandParameters;
+    }
+
+    @Override
+    public Annotation[] getAnnotations() {
+        return annotations;
+    }
+
+    @Override
+    public boolean isAnnotationPresent(Class<? extends Annotation> annotation) {
+        for(Annotation methodAnnotation : annotations){
+            if(methodAnnotation.getClass() == annotation){
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

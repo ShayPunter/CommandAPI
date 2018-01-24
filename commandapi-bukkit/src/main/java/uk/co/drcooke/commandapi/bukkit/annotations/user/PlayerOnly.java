@@ -14,29 +14,14 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package uk.co.drcooke.commandapi;
+package uk.co.drcooke.commandapi.bukkit.annotations.user;
 
-import uk.co.drcooke.commandapi.annotations.argument.numeric.ClampMethod;
-import uk.co.drcooke.commandapi.annotations.argument.numeric.IntClamp;
-import uk.co.drcooke.commandapi.annotations.command.Command;
-import uk.co.drcooke.commandapi.annotations.command.DefaultHandler;
-import uk.co.drcooke.commandapi.annotations.command.Subcommand;
-import uk.co.drcooke.commandapi.execution.ExitCode;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-@Command("test")
-public class TestCommand {
-
-    @DefaultHandler
-    public ExitCode test(@IntClamp(min = 0, max = 10) int int1, boolean bool, char c) {
-        System.out.println(int1);
-        System.out.println(bool);
-        System.out.println(c);
-        return ExitCode.SUCCESS;
-    }
-
-    @Subcommand("test")
-    public ExitCode test() {
-        return ExitCode.SUCCESS;
-    }
-
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.TYPE, ElementType.METHOD})
+public @interface PlayerOnly {
 }
