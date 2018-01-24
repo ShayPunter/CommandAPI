@@ -51,7 +51,7 @@ public class ReflectionCommandScanner implements CommandScanner {
     private CommandNamespace getEmptyCommandNamespace(Class clazz) {
         Command commandAnnotation = (Command) clazz.getAnnotation(Command.class);
         String name = commandAnnotation.value();
-        SimpleCommandNamespace commandNamespace = new SimpleCommandNamespace(name);
+        CommandNamespace commandNamespace = new SimpleCommandNamespace(name);
         Usage usage = (Usage) clazz.getAnnotation(Usage.class);
         if (usage != null) {
             commandNamespace.setUsage(usage.usage());
@@ -86,6 +86,20 @@ public class ReflectionCommandScanner implements CommandScanner {
             commandNamespace.setDefaultCommand(commandExecutable);
         } else if (method.isAnnotationPresent(Subcommand.class)) {
             Subcommand subcommand = method.getAnnotation(Subcommand.class);
+            String command = subcommand.value();
+            String[] namespaces = command.split(" ");
+            CommandNamespace realCommandNamespace = commandNamespace;
+            if(namespaces.length > 1){
+                for(String namespace : namespaces){
+                    if(realCommandNamespace.getSubNamespace(namespace) == null){
+                        CommandNamespace nextCommandNamespace = new SimpleCommandNamespace(namespace);
+                        realCommandNamespace.addSubNamespace(nextCommandNamespace);
+                        realCommandNamespace = nextCommandNamespace;
+                    }else{
+                        realCommandNamespace = realCommandNamespace.getSubNamespace(namespace);
+                    }
+                }
+            }
             List<CommandParameter> commandParameters = new ArrayList<>();
             for (Parameter parameter : method.getParameters()) {
                 Class<?> type = parameter.getType();
@@ -93,10 +107,10 @@ public class ReflectionCommandScanner implements CommandScanner {
                 commandParameters.add(new SimpleCommandParameter(type, annotations));
             }
             String permission = "";
-            if(method.isAnnotationPresent(Permission.class)){
+            if (method.isAnnotationPresent(Permission.class)) {
                 permission = method.getAnnotation(Permission.class).permission();
             }
-            CommandExecutable commandExecutable = new SimpleCommandExecutable(subcommand.value(), commandParameters, argumentManifest -> {
+            CommandExecutable commandExecutable = new SimpleCommandExecutable(namespaces[namespaces.length - 1], commandParameters, argumentManifest -> {
                 try {
                     return (ExitCode) method.invoke(parent, argumentManifest.getArguments().toArray());
                 } catch (IllegalAccessException | InvocationTargetException e) {
@@ -104,7 +118,7 @@ public class ReflectionCommandScanner implements CommandScanner {
                 }
                 return ExitCode.FAILURE;
             }, permission, method.getDeclaredAnnotations());
-            commandNamespace.addCommand(commandExecutable);
+            realCommandNamespace.addCommand(commandExecutable);
         }
     }
 

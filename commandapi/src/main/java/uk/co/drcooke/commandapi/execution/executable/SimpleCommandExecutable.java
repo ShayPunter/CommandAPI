@@ -30,8 +30,8 @@ public class SimpleCommandExecutable implements CommandExecutable {
     private final String name;
     private final List<CommandParameter> commandParameters;
     private final Function<ArgumentManifest, ExitCode> commandExecutionFunction;
-    private String usage;
-    private String description;
+    private String usage = "";
+    private String description = "";
     private final String permission;
     private final Annotation[] annotations;
 

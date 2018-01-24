@@ -37,4 +37,7 @@ public class BukkitUser implements User{
         return commandSender.hasPermission(permission) || commandSender.isOp();
     }
 
+    public CommandSender getCommandSender() {
+        return commandSender;
+    }
 }

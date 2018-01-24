@@ -23,19 +23,21 @@ import uk.co.drcooke.commandapi.argument.parsing.SimpleArgumentParserLookupServi
 import uk.co.drcooke.commandapi.argument.parsing.SimpleCommandArgumentConverterService;
 import uk.co.drcooke.commandapi.command.CommandShell;
 import uk.co.drcooke.commandapi.command.SimpleCommandShell;
-import uk.co.drcooke.commandapi.command.lookup.SimpleCommandLookupService;
+import uk.co.drcooke.commandapi.command.lookup.CommandNamespaceSearchingCommandLookup;
+import uk.co.drcooke.commandapi.command.lookup.SimpleCommandLookup;
 import uk.co.drcooke.commandapi.command.registry.CommandNamespaceRegistry;
 import uk.co.drcooke.commandapi.command.registry.SimpleCommandNamespaceRegistry;
 import uk.co.drcooke.commandapi.command.scanning.ReflectionCommandScanner;
 import uk.co.drcooke.commandapi.execution.executor.SimpleCommandExecutor;
-import uk.co.drcooke.commandapi.security.RootUser;
 
 public class CommandAPI {
 
     public static CommandShell createSimpleCommandShell() {
         CommandNamespaceRegistry commandNamespaceRegistry = new SimpleCommandNamespaceRegistry(new ReflectionCommandScanner());
         CommandArgumentConverterService commandArgumentConverterService = new SimpleCommandArgumentConverterService(new SimpleArgumentParserLookupService(ArgumentParserLookupService.getBuiltinArgumentParsers()));
-        return new SimpleCommandShell(commandNamespaceRegistry, CommandArgumentTokeniser.simple(), commandArgumentConverterService, new SimpleCommandLookupService(commandNamespaceRegistry), new SimpleCommandExecutor(commandArgumentConverterService));
+        return new SimpleCommandShell(commandNamespaceRegistry, CommandArgumentTokeniser.simple(),
+                commandArgumentConverterService, new CommandNamespaceSearchingCommandLookup(commandNamespaceRegistry),
+                new SimpleCommandExecutor(commandArgumentConverterService));
     }
 
 }

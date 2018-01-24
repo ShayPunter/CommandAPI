@@ -18,7 +18,9 @@ package uk.co.drcooke.commandapi.command.namespace;
 
 import uk.co.drcooke.commandapi.execution.executable.CommandExecutable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SimpleCommandNamespace implements CommandNamespace {
@@ -28,10 +30,12 @@ public class SimpleCommandNamespace implements CommandNamespace {
     private String usage = "";
     private Map<String, CommandExecutable> commandExecutables;
     private CommandExecutable defaultCommandExecutable;
+    private List<CommandNamespace> subNamespaces;
 
     public SimpleCommandNamespace(String name) {
         this.name = name;
         this.commandExecutables = new HashMap<>();
+        this.subNamespaces = new ArrayList<>();
     }
 
     @Override
@@ -39,18 +43,22 @@ public class SimpleCommandNamespace implements CommandNamespace {
         return name;
     }
 
+    @Override
     public String getDescription() {
         return description;
     }
 
+    @Override
     public void setDescription(String description) {
         this.description = description;
     }
 
+    @Override
     public String getUsage() {
         return usage;
     }
 
+    @Override
     public void setUsage(String usage) {
         this.usage = usage;
     }
@@ -83,6 +91,26 @@ public class SimpleCommandNamespace implements CommandNamespace {
     @Override
     public void removeCommand(String name) {
         commandExecutables.remove(name);
+    }
+
+    @Override
+    public List<CommandNamespace> getSubNamespaces() {
+        return subNamespaces;
+    }
+
+    @Override
+    public void addSubNamespace(CommandNamespace commandNamespace){
+        subNamespaces.add(commandNamespace);
+    }
+
+    @Override
+    public CommandNamespace getSubNamespace(String namespace){
+        for(CommandNamespace commandNamespace : subNamespaces){
+            if(commandNamespace.getName().equals(namespace)){
+                return commandNamespace;
+            }
+        }
+        return null;
     }
 
 }

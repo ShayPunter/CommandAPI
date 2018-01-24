@@ -16,12 +16,35 @@
 
 package uk.co.drcooke.commandapi.command.lookup;
 
+import uk.co.drcooke.commandapi.command.namespace.CommandNamespace;
+import uk.co.drcooke.commandapi.command.registry.CommandNamespaceRegistry;
 import uk.co.drcooke.commandapi.execution.executable.CommandExecutable;
 
 import java.util.Deque;
 
-public interface CommandLookup {
+public class SimpleCommandLookup implements CommandLookup {
 
-    CommandExecutable getCommand(Deque<String> tokens) throws CommandNotFoundException;
+    private CommandNamespaceRegistry commandNamespaceRegistry;
+
+    public SimpleCommandLookup(CommandNamespaceRegistry commandNamespaceRegistry) {
+        this.commandNamespaceRegistry = commandNamespaceRegistry;
+    }
+
+    @Override
+    public CommandExecutable getCommand(Deque<String> stringDeque) throws CommandNotFoundException {
+        String namespace = stringDeque.pop();
+        if (stringDeque.peek() == null) {
+            return commandNamespaceRegistry.getCommandNamespace(namespace).getDefaultCommand();
+        }
+        CommandNamespace commandNamespace = commandNamespaceRegistry.getCommandNamespace(namespace);
+        CommandExecutable commandExecutable = commandNamespace.getSubCommand(stringDeque.peek());
+        if (commandExecutable == null) {
+            commandExecutable =  commandNamespace.getDefaultCommand();
+        }
+        if(commandExecutable == null){
+            throw new CommandNotFoundException();
+        }
+        return commandExecutable;
+    }
 
 }

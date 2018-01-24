@@ -16,17 +16,17 @@
 
 package uk.co.drcooke.commandapi.bukkit;
 
+import org.bukkit.Bukkit;
 import uk.co.drcooke.commandapi.argument.lexing.CommandArgumentTokeniser;
-import uk.co.drcooke.commandapi.argument.parsing.ArgumentParserLookupService;
-import uk.co.drcooke.commandapi.argument.parsing.CommandArgumentConverterService;
-import uk.co.drcooke.commandapi.argument.parsing.SimpleArgumentParserLookupService;
-import uk.co.drcooke.commandapi.argument.parsing.SimpleCommandArgumentConverterService;
+import uk.co.drcooke.commandapi.argument.parsing.*;
+import uk.co.drcooke.commandapi.bukkit.player.BukkitUser;
 import uk.co.drcooke.commandapi.bukkit.security.CommandSenderTypeCheckingCommandExcecutorDecorator;
 import uk.co.drcooke.commandapi.bukkit.security.PermissionCheckingCommandExecutorDecorator;
 import uk.co.drcooke.commandapi.command.CommandShell;
 import uk.co.drcooke.commandapi.command.SimpleCommandShell;
 import uk.co.drcooke.commandapi.command.lookup.CommandLookup;
-import uk.co.drcooke.commandapi.command.lookup.SimpleCommandLookupService;
+import uk.co.drcooke.commandapi.command.lookup.CommandNotFoundException;
+import uk.co.drcooke.commandapi.command.lookup.SimpleCommandLookup;
 import uk.co.drcooke.commandapi.command.registry.CommandNamespaceRegistry;
 import uk.co.drcooke.commandapi.command.registry.SimpleCommandNamespaceRegistry;
 import uk.co.drcooke.commandapi.command.scanning.ReflectionCommandScanner;
@@ -37,6 +37,7 @@ import uk.co.drcooke.commandapi.execution.executor.SimpleCommandExecutor;
 import uk.co.drcooke.commandapi.security.User;
 
 import java.util.Deque;
+import java.util.NoSuchElementException;
 
 public class BukkitCommandShell implements CommandShell {
 
@@ -60,8 +61,18 @@ public class BukkitCommandShell implements CommandShell {
     @Override
     public ExitCode execute(String input, User user) {
         Deque<String> tokens = commandArgumentTokeniser.parseCommand(input);
-        CommandExecutable commandExecutable = commandLookup.getCommand(tokens);
-        return commandExecutor.execute(commandExecutable, tokens, user);
+        CommandExecutable commandExecutable = null;
+        try {
+            commandExecutable = commandLookup.getCommand(tokens);
+        } catch (CommandNotFoundException e) {
+            ((BukkitUser) user).getCommandSender().sendMessage("Command not found.");
+        }
+        try {
+            return commandExecutor.execute(commandExecutable, tokens, user);
+        }catch (NoSuchElementException | IllegalInputException e){
+            ((BukkitUser) user).getCommandSender().sendMessage("Invalid usage. " + commandExecutable.getUsage());
+        }
+        return null;
     }
 
     public CommandNamespaceRegistry getCommandNamespaceRegistry() {
@@ -99,7 +110,7 @@ public class BukkitCommandShell implements CommandShell {
         CommandArgumentConverterService commandArgumentConverterService = new SimpleCommandArgumentConverterService(
                 new SimpleArgumentParserLookupService(ArgumentParserLookupService.getBuiltinArgumentParsers()));
         return new SimpleCommandShell(commandNamespaceRegistry, CommandArgumentTokeniser.simple(),
-                commandArgumentConverterService, new SimpleCommandLookupService(commandNamespaceRegistry),
+                commandArgumentConverterService, new SimpleCommandLookup(commandNamespaceRegistry),
                 new CommandSenderTypeCheckingCommandExcecutorDecorator(
                         new PermissionCheckingCommandExecutorDecorator(
                                 new SimpleCommandExecutor(commandArgumentConverterService))));

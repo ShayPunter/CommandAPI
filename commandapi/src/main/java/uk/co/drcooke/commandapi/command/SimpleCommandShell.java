@@ -19,6 +19,7 @@ package uk.co.drcooke.commandapi.command;
 import uk.co.drcooke.commandapi.argument.lexing.CommandArgumentTokeniser;
 import uk.co.drcooke.commandapi.argument.parsing.CommandArgumentConverterService;
 import uk.co.drcooke.commandapi.command.lookup.CommandLookup;
+import uk.co.drcooke.commandapi.command.lookup.CommandNotFoundException;
 import uk.co.drcooke.commandapi.command.registry.CommandNamespaceRegistry;
 import uk.co.drcooke.commandapi.execution.ExitCode;
 import uk.co.drcooke.commandapi.execution.executable.CommandExecutable;
@@ -49,7 +50,13 @@ public class SimpleCommandShell implements CommandShell {
     @Override
     public ExitCode execute(String input, User user) {
         Deque<String> tokens = commandArgumentTokeniser.parseCommand(input);
-        CommandExecutable commandExecutable = commandLookup.getCommand(tokens);
+        CommandExecutable commandExecutable = null;
+        try {
+            commandExecutable = commandLookup.getCommand(tokens);
+        } catch (CommandNotFoundException e) {
+            System.out.println("Command not found");
+            return ExitCode.FAILURE;
+        }
         return commandExecutor.execute(commandExecutable, tokens, user);
     }
 

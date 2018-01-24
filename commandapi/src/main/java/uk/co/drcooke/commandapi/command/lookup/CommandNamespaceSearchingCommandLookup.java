@@ -22,26 +22,28 @@ import uk.co.drcooke.commandapi.execution.executable.CommandExecutable;
 
 import java.util.Deque;
 
-public class SimpleCommandLookupService implements CommandLookup {
+public class CommandNamespaceSearchingCommandLookup implements CommandLookup{
 
     private CommandNamespaceRegistry commandNamespaceRegistry;
 
-    public SimpleCommandLookupService(CommandNamespaceRegistry commandNamespaceRegistry) {
+    public CommandNamespaceSearchingCommandLookup(CommandNamespaceRegistry commandNamespaceRegistry) {
         this.commandNamespaceRegistry = commandNamespaceRegistry;
     }
 
     @Override
-    public CommandExecutable getCommand(Deque<String> stringDeque) {
-        String namespace = stringDeque.pop();
-        if (stringDeque.peek() == null) {
-            return commandNamespaceRegistry.getCommandNamespace(namespace).getDefaultCommand();
+    public CommandExecutable getCommand(Deque<String> tokens) throws CommandNotFoundException {
+        CommandNamespace currentNamespace = null;
+        for(String token = tokens.pollFirst(); token != null; token = tokens.pollFirst()){
+            if(currentNamespace == null){
+                currentNamespace = commandNamespaceRegistry.getCommandNamespace(token);
+            }
+            if(currentNamespace.getSubNamespace(token) != null){
+                currentNamespace = currentNamespace.getSubNamespace(token);
+            }else{
+                return currentNamespace.getSubCommand(token);
+            }
         }
-        CommandNamespace commandNamespace = commandNamespaceRegistry.getCommandNamespace(namespace);
-        CommandExecutable commandExecutable = commandNamespace.getSubCommand(stringDeque.peek());
-        if (commandExecutable == null) {
-            return commandNamespace.getDefaultCommand();
-        }
-        return commandExecutable;
+        return null;
     }
 
 }
