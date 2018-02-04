@@ -39,9 +39,9 @@ public class SimpleCommandLookup implements CommandLookup {
         CommandNamespace commandNamespace = commandNamespaceRegistry.getCommandNamespace(namespace);
         CommandExecutable commandExecutable = commandNamespace.getSubCommand(stringDeque.peek());
         if (commandExecutable == null) {
-            commandExecutable =  commandNamespace.getDefaultCommand();
+            commandExecutable = commandNamespace.getDefaultCommand();
         }
-        if(commandExecutable == null){
+        if (commandExecutable == null) {
             throw new CommandNotFoundException();
         }
         return commandExecutable;

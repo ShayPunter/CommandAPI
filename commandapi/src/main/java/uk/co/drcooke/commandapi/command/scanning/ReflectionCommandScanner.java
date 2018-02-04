@@ -72,7 +72,7 @@ public class ReflectionCommandScanner implements CommandScanner {
                 commandParameters.add(new SimpleCommandParameter(type, annotations));
             }
             String permission = "";
-            if(method.isAnnotationPresent(Permission.class)){
+            if (method.isAnnotationPresent(Permission.class)) {
                 permission = method.getAnnotation(Permission.class).permission();
             }
             CommandExecutable commandExecutable = new SimpleCommandExecutable("", commandParameters, argumentManifest -> {
@@ -89,13 +89,13 @@ public class ReflectionCommandScanner implements CommandScanner {
             String command = subcommand.value();
             String[] namespaces = command.split(" ");
             CommandNamespace realCommandNamespace = commandNamespace;
-            if(namespaces.length > 1){
-                for(String namespace : namespaces){
-                    if(realCommandNamespace.getSubNamespace(namespace) == null){
+            if (namespaces.length > 1) {
+                for (String namespace : namespaces) {
+                    if (realCommandNamespace.getSubNamespace(namespace) == null) {
                         CommandNamespace nextCommandNamespace = new SimpleCommandNamespace(namespace);
                         realCommandNamespace.addSubNamespace(nextCommandNamespace);
                         realCommandNamespace = nextCommandNamespace;
-                    }else{
+                    } else {
                         realCommandNamespace = realCommandNamespace.getSubNamespace(namespace);
                     }
                 }

@@ -30,10 +30,10 @@ public class SimpleCommandExecutable implements CommandExecutable {
     private final String name;
     private final List<CommandParameter> commandParameters;
     private final Function<ArgumentManifest, ExitCode> commandExecutionFunction;
-    private String usage = "";
-    private String description = "";
     private final String permission;
     private final Annotation[] annotations;
+    private String usage = "";
+    private String description = "";
 
     public SimpleCommandExecutable(String name, List<CommandParameter> commandParameters,
                                    Function<ArgumentManifest, ExitCode> commandExecutionFunction,
@@ -87,8 +87,8 @@ public class SimpleCommandExecutable implements CommandExecutable {
 
     @Override
     public boolean isAnnotationPresent(Class<? extends Annotation> annotation) {
-        for(Annotation methodAnnotation : annotations){
-            if(methodAnnotation.getClass() == annotation){
+        for (Annotation methodAnnotation : annotations) {
+            if (methodAnnotation.getClass() == annotation) {
                 return true;
             }
         }
@@ -96,7 +96,7 @@ public class SimpleCommandExecutable implements CommandExecutable {
     }
 
     @Override
-    public boolean canExecute(User user){
+    public boolean canExecute(User user) {
         return user.hasPermission(permission);
     }
 

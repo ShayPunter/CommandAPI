@@ -99,14 +99,14 @@ public class SimpleCommandNamespace implements CommandNamespace {
     }
 
     @Override
-    public void addSubNamespace(CommandNamespace commandNamespace){
+    public void addSubNamespace(CommandNamespace commandNamespace) {
         subNamespaces.add(commandNamespace);
     }
 
     @Override
-    public CommandNamespace getSubNamespace(String namespace){
-        for(CommandNamespace commandNamespace : subNamespaces){
-            if(commandNamespace.getName().equals(namespace)){
+    public CommandNamespace getSubNamespace(String namespace) {
+        for (CommandNamespace commandNamespace : subNamespaces) {
+            if (commandNamespace.getName().equals(namespace)) {
                 return commandNamespace;
             }
         }

@@ -23,7 +23,7 @@ import uk.co.drcooke.commandapi.execution.executable.CommandExecutable;
 import java.util.ArrayList;
 import java.util.Deque;
 
-public class CommandNamespaceSearchingCommandLookup implements CommandLookup{
+public class CommandNamespaceSearchingCommandLookup implements CommandLookup {
 
     private CommandNamespaceRegistry commandNamespaceRegistry;
 
@@ -35,22 +35,22 @@ public class CommandNamespaceSearchingCommandLookup implements CommandLookup{
     public CommandExecutable getCommand(Deque<String> tokens) throws CommandNotFoundException {
         CommandNamespace currentNamespace = null;
         CommandExecutable commandExecutable = null;
-        for(String token : new ArrayList<>(tokens)){
-            if(currentNamespace == null){
+        for (String token : new ArrayList<>(tokens)) {
+            if (currentNamespace == null) {
                 currentNamespace = commandNamespaceRegistry.getCommandNamespace(token);
                 tokens.pop();
             }
-            if(currentNamespace.getSubNamespace(token) != null){
+            if (currentNamespace.getSubNamespace(token) != null) {
                 currentNamespace = currentNamespace.getSubNamespace(token);
                 tokens.pop();
-            }else{
+            } else {
                 commandExecutable = currentNamespace.getSubCommand(token);
-                if(commandExecutable == null){
+                if (commandExecutable == null) {
                     commandExecutable = currentNamespace.getDefaultCommand();
                 }
             }
         }
-        if (commandExecutable == null){
+        if (commandExecutable == null) {
             throw new CommandNotFoundException();
         }
         return commandExecutable;

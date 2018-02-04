@@ -24,7 +24,6 @@ import uk.co.drcooke.commandapi.argument.parsing.SimpleCommandArgumentConverterS
 import uk.co.drcooke.commandapi.command.CommandShell;
 import uk.co.drcooke.commandapi.command.SimpleCommandShell;
 import uk.co.drcooke.commandapi.command.lookup.CommandNamespaceSearchingCommandLookup;
-import uk.co.drcooke.commandapi.command.lookup.SimpleCommandLookup;
 import uk.co.drcooke.commandapi.command.registry.CommandNamespaceRegistry;
 import uk.co.drcooke.commandapi.command.registry.SimpleCommandNamespaceRegistry;
 import uk.co.drcooke.commandapi.command.scanning.ReflectionCommandScanner;
