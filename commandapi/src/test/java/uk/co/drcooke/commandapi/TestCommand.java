@@ -35,7 +35,7 @@ public class TestCommand {
     }
 
     @Subcommand("test test")
-    public ExitCode test() {
+    public ExitCode test(String argument) {
         return ExitCode.SUCCESS;
     }
 

@@ -43,6 +43,6 @@ public enum SimpleStringArgumentParser implements ArgumentParser<String> {
 
     @Override
     public boolean canParseParameter(CommandParameter commandParameter) {
-        return false;
+        return commandParameter.getType() == String.class;
     }
 }

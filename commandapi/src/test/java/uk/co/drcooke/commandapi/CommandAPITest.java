@@ -26,7 +26,7 @@ public class CommandAPITest {
     public void testCommandAPI() {
         CommandShell commandShell = CommandAPI.createSimpleCommandShell();
         commandShell.register(new TestCommand());
-        System.out.println(commandShell.execute("test test test", new RootUser()).getName());
+        System.out.println(commandShell.execute("test test test test", new RootUser()).getName());
     }
 
 }

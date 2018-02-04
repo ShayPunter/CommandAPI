@@ -20,6 +20,7 @@ import uk.co.drcooke.commandapi.command.namespace.CommandNamespace;
 import uk.co.drcooke.commandapi.command.registry.CommandNamespaceRegistry;
 import uk.co.drcooke.commandapi.execution.executable.CommandExecutable;
 
+import java.util.ArrayList;
 import java.util.Deque;
 
 public class CommandNamespaceSearchingCommandLookup implements CommandLookup{
@@ -33,17 +34,26 @@ public class CommandNamespaceSearchingCommandLookup implements CommandLookup{
     @Override
     public CommandExecutable getCommand(Deque<String> tokens) throws CommandNotFoundException {
         CommandNamespace currentNamespace = null;
-        for(String token = tokens.pollFirst(); token != null; token = tokens.pollFirst()){
+        CommandExecutable commandExecutable = null;
+        for(String token : new ArrayList<>(tokens)){
             if(currentNamespace == null){
                 currentNamespace = commandNamespaceRegistry.getCommandNamespace(token);
+                tokens.pop();
             }
             if(currentNamespace.getSubNamespace(token) != null){
                 currentNamespace = currentNamespace.getSubNamespace(token);
+                tokens.pop();
             }else{
-                return currentNamespace.getSubCommand(token);
+                commandExecutable = currentNamespace.getSubCommand(token);
+                if(commandExecutable == null){
+                    commandExecutable = currentNamespace.getDefaultCommand();
+                }
             }
         }
-        return null;
+        if (commandExecutable == null){
+            throw new CommandNotFoundException();
+        }
+        return commandExecutable;
     }
 
 }
