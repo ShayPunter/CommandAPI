@@ -47,6 +47,9 @@ public class CommandNamespaceSearchingCommandLookup implements CommandLookup {
                 commandExecutable = currentNamespace.getSubCommand(token);
                 if (commandExecutable == null) {
                     commandExecutable = currentNamespace.getDefaultCommand();
+                }else if(currentNamespace.getSubNamespace(token) == null){
+                    tokens.pop();
+                    return commandExecutable;
                 }
             }
         }
