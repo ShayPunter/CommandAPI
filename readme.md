@@ -1,29 +1,29 @@
 # Annotation based command API
-## @Command
+#### @Command
 The command that a class handles(spaces not supported)
-## @DefaultHandler
+#### @DefaultHandler
 The method that should handle a command by default
-## @Subcommand
+#### @Subcommand
 A method that contains a sub command(spaces are supported)
-## @Description
+#### @Description
 The description of a (sub)command
-## @Usage
+#### @Usage
 The usage of a (sub)command)
-## @Exhaustive
+#### @Exhaustive
 If this is put on a string parameter, it will pass the rest of the input into this variable
-## @DecimalClamp
+#### @DecimalClamp
 Clamps a variable within a decimal range
-## @IntClamp
+#### @IntClamp
 Clamps a variable within an int range
-## @PreciseClamp
+#### @PreciseClamp
 Clamps a variable within a decimal range, given as a string
-## @Length
+#### @Length
 Validates the length of a string
-## @Match
+#### @Match
 Validates a string matches a regex
-## @Permission
+#### @Permission
 Require a permission
-## @ConsoleOnly
+#### @ConsoleOnly
 Only console can execute command
-## @PlayerOnly
+#### @PlayerOnly
 Only a player can execute this command
