@@ -41,9 +41,11 @@ public class SimpleCommandNamespaceRegistry implements CommandNamespaceRegistry 
 
     @Override
     public void register(Object o) {
-        CommandNamespace namespace = COMMAND_SCANNER.getCommands(o);
-        COMMAND_NAMESPACE_MAP.put(namespace.getName(), namespace);
-        OBJECT_NAMESPACE_MAP.put(o, namespace.getName());
+        CommandNamespace[] namespaces = COMMAND_SCANNER.getCommands(o);
+        for(CommandNamespace namespace : namespaces) {
+            COMMAND_NAMESPACE_MAP.put(namespace.getName(), namespace);
+            OBJECT_NAMESPACE_MAP.put(o, namespace.getName());
+        }
     }
 
     @Override

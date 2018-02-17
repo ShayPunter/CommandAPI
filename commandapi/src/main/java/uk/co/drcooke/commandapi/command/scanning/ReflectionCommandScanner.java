@@ -36,19 +36,21 @@ import java.util.List;
 public class ReflectionCommandScanner implements CommandScanner {
 
     @Override
-    public CommandNamespace getCommands(Object object) {
+    public CommandNamespace[] getCommands(Object object) {
         Class clazz = object.getClass();
         if (!clazz.isAnnotationPresent(Command.class)) {
             return null;
         }
-        CommandNamespace commandNamespace = getEmptyCommandNamespace(clazz);
-        for (Method method : clazz.getDeclaredMethods()) {
-            processMethod(method, commandNamespace, object);
+        CommandNamespace[] commandNamespaces = getEmptyCommandNamespaces(clazz);
+        for(CommandNamespace commandNamespace :commandNamespaces) {
+            for (Method method : clazz.getDeclaredMethods()) {
+                processMethod(method, commandNamespace, object);
+            }
         }
-        return commandNamespace;
+        return commandNamespaces;
     }
 
-    private CommandNamespace getEmptyCommandNamespace(Class clazz) {
+    private CommandNamespace[] getEmptyCommandNamespaces(Class clazz) {
         Command commandAnnotation = (Command) clazz.getAnnotation(Command.class);
         String name = commandAnnotation.value();
         CommandNamespace commandNamespace = new SimpleCommandNamespace(name);
@@ -60,7 +62,19 @@ public class ReflectionCommandScanner implements CommandScanner {
         if (description != null) {
             commandNamespace.setDescription(description.description());
         }
-        return commandNamespace;
+        CommandNamespace[] commandNamespaces = new CommandNamespace[]{commandNamespace};
+        if (clazz.isAnnotationPresent(Alias.class)){
+            String[] aliases = ((Alias)clazz.getAnnotation(Alias.class)).value();
+            commandNamespaces = new CommandNamespace[1 + aliases.length];
+            commandNamespaces[0] = commandNamespace;
+            for(int i = 0; i < aliases.length; i++){
+                CommandNamespace aliasNamespace = new SimpleCommandNamespace(aliases[i]);
+                aliasNamespace.setDescription(commandNamespace.getDescription());
+                aliasNamespace.setUsage(commandNamespace.getUsage());
+                commandNamespaces[i + 1] = aliasNamespace;
+            }
+        }
+        return commandNamespaces;
     }
 
     private void processMethod(Method method, CommandNamespace commandNamespace, Object parent) {
@@ -119,6 +133,28 @@ public class ReflectionCommandScanner implements CommandScanner {
                 return ExitCode.FAILURE;
             }, permission, method.getDeclaredAnnotations());
             realCommandNamespace.addCommand(commandExecutable);
+            if(method.isAnnotationPresent(Alias.class)){
+                String[] aliases = method.getAnnotation(Alias.class).value();
+                for(String alias : aliases){
+                    String[] aliasNamespaces = alias.split(" ");
+                    for(String name : aliasNamespaces){
+                        String[] aliasSubNamespaces = name.split(" ");
+                        CommandNamespace curentCommandNamespace = commandNamespace;
+                        if (aliasSubNamespaces.length > 1) {
+                            for (String namespace : aliasSubNamespaces) {
+                                if (curentCommandNamespace.getSubNamespace(namespace) == null) {
+                                    CommandNamespace nextCommandNamespace = new SimpleCommandNamespace(namespace);
+                                    curentCommandNamespace.addSubNamespace(nextCommandNamespace);
+                                    curentCommandNamespace = nextCommandNamespace;
+                                } else {
+                                    curentCommandNamespace = curentCommandNamespace.getSubNamespace(namespace);
+                                }
+                            }
+                        }
+                        curentCommandNamespace.addCommand(commandExecutable);
+                    }
+                }
+            }
         }
     }
 

@@ -20,6 +20,6 @@ import uk.co.drcooke.commandapi.command.namespace.CommandNamespace;
 
 public interface CommandScanner {
 
-    CommandNamespace getCommands(Object object);
+    CommandNamespace[] getCommands(Object object);
 
 }
